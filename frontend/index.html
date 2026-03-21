@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DeadlineShield</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- LANDING PAGE -->
+
+<section id="landing">
+
+<video autoplay muted loop id="bgVideo">
+<source src="https://cdn.coverr.co/videos/coverr-working-on-a-laptop-5173/1080p.mp4" type="video/mp4">
+</video>
+
+<div class="overlay">
+
+<h1 class="title">DeadlineShield</h1>
+
+<p class="subtitle">
+Turn deadlines into achievements. Stay accountable and finish tasks on time.
+</p>
+
+<button class="startBtn" onclick="openAuth()">Get Started</button>
+
+</div>
+
+</section>
+
+
+<!-- LOGIN / SIGNUP -->
+
+<section id="auth">
+
+<div class="auth-box">
+
+<h2 id="formTitle">Login</h2>
+
+<input id="email" type="email" placeholder="Enter Email">
+
+<input id="password" type="password" placeholder="Enter Password">
+
+<button id="authButton" onclick="login()">Login</button>
+
+<p id="toggleText">
+Don't have an account?
+<a href="#" onclick="toggleForm()">Sign Up</a>
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard">
+
+<header>
+
+<h2>DeadlineShield Dashboard</h2>
+
+<button class="logoutBtn" onclick="logout()">Logout</button>
+
+</header>
+
+<div class="container">
+
+<h3>Add Task</h3>
+
+<input id="taskName" placeholder="Task name">
+
+<input id="deadline" type="date">
+
+<button onclick="addTask()">Add Task</button>
+
+<h3>Your Tasks</h3>
+
+<div id="taskList"></div>
+
+</div>
+
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
