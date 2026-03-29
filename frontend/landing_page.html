@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeadlineShield</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <link rel="stylesheet" href="landing_page.css">
+</head>
+<body>
+
+<section class="hero">
+
+  <!-- BACKGROUND CLOCK -->
+  <div class="bg-clock" id="clock">
+    <div class="clock-inner">
+      <div class="hand hour"   id="hour"></div>
+      <div class="hand minute" id="minute"></div>
+      <div class="hand second" id="second"></div>
+      <div class="clock-center"></div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay"></div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="badge"><span class="dot"></span> Deadline Enforcement System</div>
+
+    <!-- ✅ UPDATED TAGLINE -->
+    <h1 class="heading">
+      Is the clock ticking<br>too fast for you to keep up with
+      <span class="deadline-word">deadlines?</span>
+    </h1>
+
+    <p class="subtext">
+      Every second you wait, <span>the deadline gets closer.</span> Take control now.
+    </p>
+
+    <div class="features">
+      <div class="feat"><span class="feat-icon">⏰</span> Hourly Email Reminders</div>
+      <div class="feat"><span class="feat-icon">📸</span> Proof-Based Completion</div>
+      <div class="feat"><span class="feat-icon">🛡️</span> Deadline Enforcement</div>
+    </div>
+
+    <!-- CARD -->
+    <div class="card">
+
+      <div class="tabs">
+        <button class="tab active" data-target="register">Register</button>
+        <button class="tab"        data-target="login">Login</button>
+      </div>
+
+      <div class="form-body">
+
+        <!-- REGISTER -->
+        <div class="form-panel active" id="register">
+          <div class="field-group">
+            <input type="text"     placeholder="Full Name" required>
+          </div>
+          <div class="field-group">
+            <input type="email"    placeholder="Email Address" required>
+          </div>
+          <div class="field-group">
+            <input type="tel"      placeholder="WhatsApp Number" required>
+          </div>
+          <div class="field-group">
+            <input type="password" placeholder="Password" required>
+          </div>
+          <div class="field-group">
+            <input type="password" placeholder="Confirm Password" required>
+          </div>
+          <button class="submit-btn" id="register-btn">Create Account</button>
+          <p class="form-footer">Already have an account? <a href="#" data-switch="login">Login</a></p>
+        </div>
+
+        <!-- LOGIN -->
+        <div class="form-panel" id="login">
+          <div class="field-group">
+            <input type="email"    placeholder="Email Address" required>
+          </div>
+          <div class="field-group">
+            <input type="password" placeholder="Password" required>
+          </div>
+          <button class="submit-btn" id="login-btn">Login to Dashboard</button>
+          <p class="form-footer">No account? <a href="#" data-switch="register">Register</a></p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+<script src="landing_page.js"></script>
+</body>
+</html>
