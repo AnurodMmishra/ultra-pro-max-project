@@ -2,13 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const { sendNotification } = require("../controllers/notificationController");
+const asyncHandler = require("../utils/asyncHandler");
 
-// ✅ ADD THIS TEST ROUTE
 router.get("/test", (req, res) => {
     res.send("Notification route working");
 });
 
-// ✅ YOUR POST ROUTE
-router.post("/send", sendNotification);
+router.post("/send", asyncHandler(sendNotification));
 
 module.exports = router;

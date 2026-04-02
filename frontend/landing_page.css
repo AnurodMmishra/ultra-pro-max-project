@@ -256,6 +256,18 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* CARD */
 .card {
   margin-top: 8px;
@@ -265,7 +277,7 @@ body {
   border-radius: 20px;
   border: 1px solid rgba(0,255,255,0.3);
   backdrop-filter: blur(24px);
-  overflow: hidden;
+  overflow: visible;
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.03),
     0 30px 60px rgba(0,0,0,0.7),
@@ -337,6 +349,95 @@ body {
   background: rgba(0,255,255,0.03);
 }
 
+/* intl-tel-input — match card, flags + dial codes for all countries */
+.phone-field-group .phone-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.35;
+  text-align: left;
+}
+
+.phone-field-group .iti {
+  width: 100%;
+  display: block;
+}
+
+.phone-field-group .iti__flag-container {
+  border-radius: 10px 0 0 10px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.phone-field-group .iti__selected-flag {
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px 0 0 10px;
+}
+
+.phone-field-group .iti__selected-flag:hover,
+.phone-field-group .iti__selected-flag:focus {
+  background: rgba(0,255,255,0.08);
+}
+
+.phone-field-group .iti__arrow {
+  border-top-color: rgba(255,255,255,0.45);
+}
+
+/* List may be portaled to body — keep styles global */
+.iti__country-list {
+  z-index: 10050;
+  background: rgba(10, 10, 12, 0.98);
+  border: 1px solid rgba(0,255,255,0.28);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+  max-height: min(220px, 45vh);
+}
+
+.iti__country-list .iti__country-name {
+  color: rgba(255,255,255,0.88);
+}
+
+.iti__country-list .iti__dial-code {
+  color: rgba(0,255,255,0.75);
+}
+
+.iti__country-list .iti__country.iti__highlight {
+  background: rgba(0,255,255,0.12);
+}
+
+.phone-field-group .iti__tel-input {
+  width: 100%;
+  padding: 13px 16px;
+  padding-left: 92px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.phone-field-group .iti--separate-dial-code .iti__tel-input {
+  padding-left: 98px;
+}
+
+.phone-field-group .iti__tel-input::placeholder {
+  color: rgba(255,255,255,0.25);
+}
+
+.phone-field-group .iti__tel-input:focus {
+  border-color: rgba(0,255,255,0.6);
+  box-shadow: 0 0 0 3px rgba(0,255,255,0.1);
+  background: rgba(0,255,255,0.03);
+}
+
+.phone-field-group .iti--allow-dropdown.iti--separate-dial-code.iti--show-flags .iti__selected-dial-code {
+  color: rgba(0,255,255,0.92);
+  font-weight: 500;
+  margin-left: 6px;
+}
+
 /* SUBMIT BUTTON */
 .submit-btn {
   width: 100%;
@@ -372,6 +473,60 @@ body {
   color: rgba(255,255,255,0.25);
 }
 .form-footer a { color: var(--cyan); text-decoration: none; font-weight: 500; }
+
+/* OTP panel */
+.otp-panel {
+  margin-top: 10px;
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  text-align: left;
+}
+
+.otp-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(0,255,255,0.9);
+}
+
+.otp-sub {
+  margin-top: 6px;
+  font-size: 0.74rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.35;
+}
+
+.otp-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.otp-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,255,255,0.35);
+  background: rgba(0,255,255,0.14);
+  color: rgba(255,255,255,0.9);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.otp-btn.ghost {
+  background: transparent;
+  border-color: rgba(255,255,255,0.16);
+  color: rgba(255,255,255,0.7);
+}
+
+.otp-btn:hover {
+  border-color: rgba(0,255,255,0.7);
+}
 
 /* TOAST */
 .toast {

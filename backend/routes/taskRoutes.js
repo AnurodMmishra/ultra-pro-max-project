@@ -9,12 +9,13 @@ const {
 } = require("../controllers/taskController");
 const { uploadProof } = require("../controllers/uploadController");
 const upload = require("../config/multer");
+const asyncHandler = require("../utils/asyncHandler");
 
-router.get("/", getTasks);
-router.post("/add", addTask);
-router.put("/edit/:id", editTask);
-router.delete("/delete/:id", deleteTask);
-router.patch("/complete/:id", markComplete);
-router.post("/upload-proof/:id", upload.single("proof"), uploadProof);
+router.get("/", asyncHandler(getTasks));
+router.post("/add", asyncHandler(addTask));
+router.put("/edit/:id", asyncHandler(editTask));
+router.delete("/delete/:id", asyncHandler(deleteTask));
+router.patch("/complete/:id", asyncHandler(markComplete));
+router.post("/upload-proof/:id", upload.single("proof"), asyncHandler(uploadProof));
 
 module.exports = router;

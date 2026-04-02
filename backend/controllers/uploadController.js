@@ -1,27 +1,34 @@
 const path = require("path");
+const Task = require("../models/Task");
 
-const uploadProof = (req, res) => {
+const uploadProof = async (req, res) => {
     try {
         const { id } = req.params;
 
         if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded" });
+            return res.status(400).json({ success: false, message: "No file uploaded" });
         }
 
-        // TODO: When MongoDB is ready, update task by id in database
-        // For now just return success with file info
+        // Update task in database with proof image path
+        const task = await Task.findByIdAndUpdate(
+            id,
+            { proofImage: `/uploads/${req.file.filename}` },
+            { new: true }
+        );
+
+        if (!task) {
+            return res.status(404).json({ success: false, message: "Task not found" });
+        }
+
         return res.json({
+            success: true,
             message: "Proof uploaded successfully",
-            taskId: id,
-            file: {
-                filename: req.file.filename,
-                path: `/uploads/${req.file.filename}`
-            }
+            data: task
         });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ success: false, error: error.message });
     }
 };
 

@@ -1,9 +1,11 @@
 const multer = require("multer");
 const path = require("path");
 
+const uploadsDir = path.join(__dirname, "..", "uploads");
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads/");
+        cb(null, uploadsDir);
     },
     filename: function (req, file, cb) {
         const uniqueName = `proof_${req.params.id}_${Date.now()}${path.extname(file.originalname)}`;

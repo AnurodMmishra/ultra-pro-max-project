@@ -1,6 +1,6 @@
-/* ════════════════════════════════
-   THEME VARIABLES
-════════════════════════════════ */
+
+   /* THEME  */
+
 :root {
   --bg:        #111;
   --bg2:       #1a1a1a;
@@ -25,9 +25,9 @@ body.light {
   --accent: #007b99;
 }
 
-/* ════════════════════════════════
-   YOUR ORIGINAL CSS (untouched)
-════════════════════════════════ */
+
+   /* CSS  */
+
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;

@@ -1,78 +1,121 @@
-let tasks = [];
+const Task = require("../models/Task");
 
 // GET all tasks
-const getTasks = (req, res) => {
-    res.json(tasks);
+const getTasks = async (req, res) => {
+    try {
+        const tasks = await Task.find().sort({ deadline: 1 });
+        res.json({ success: true, data: tasks });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
 
 // ADD task
-const addTask = (req, res) => {
-    const { title, description, deadline, notifyType, email } = req.body;
+const addTask = async (req, res) => {
+    try {
+        const { title, description, deadline, notifyType, email, phone } = req.body;
 
-    const newTask = {
-        id: Date.now().toString(), // temporary ID until MongoDB
-        title,
-        description,
-        deadline,
-        notifyType,  // "email" or "whatsapp" (future)
-        email,
-        isCompleted: false,
-        proofImage: null,
-        createdAt: new Date().toISOString()
-    };
+        // Validation
+        if (!title || !deadline || !notifyType) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Title, deadline, and notifyType are required" 
+            });
+        }
 
-    tasks.push(newTask);
-    res.json({ message: "Task added", data: newTask });
+        if (notifyType === "email" && !email) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Email is required for email notifications" 
+            });
+        }
+
+        if (notifyType === "whatsapp" && !phone) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Phone is required for WhatsApp notifications" 
+            });
+        }
+
+        const newTask = new Task({
+            title,
+            description,
+            deadline,
+            notifyType,
+            email,
+            phone,
+            isCompleted: false,
+            proofImage: null
+        });
+
+        await newTask.save();
+        res.status(201).json({ success: true, message: "Task added", data: newTask });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
 
 // EDIT task
-const editTask = (req, res) => {
-    const { id } = req.params;
-    const { title, description, deadline, notifyType, email } = req.body;
+const editTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description, deadline, notifyType, email, phone } = req.body;
 
-    const index = tasks.findIndex(t => t.id === id);
-    if (index === -1) {
-        return res.status(404).json({ message: "Task not found" });
+        const task = await Task.findByIdAndUpdate(
+            id,
+            { title, description, deadline, notifyType, email, phone },
+            { new: true, runValidators: true }
+        );
+
+        if (!task) {
+            return res.status(404).json({ success: false, message: "Task not found" });
+        }
+
+        res.json({ success: true, message: "Task updated", data: task });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
-
-    tasks[index] = {
-        ...tasks[index],
-        title,
-        description,
-        deadline,
-        notifyType,
-        email
-    };
-
-    res.json({ message: "Task updated", data: tasks[index] });
 };
 
 // DELETE task
-const deleteTask = (req, res) => {
-    const { id } = req.params;
+const deleteTask = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-    const index = tasks.findIndex(t => t.id === id);
-    if (index === -1) {
-        return res.status(404).json({ message: "Task not found" });
+        const task = await Task.findByIdAndDelete(id);
+
+        if (!task) {
+            return res.status(404).json({ success: false, message: "Task not found" });
+        }
+
+        res.json({ success: true, message: "Task deleted" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
-
-    tasks.splice(index, 1);
-    res.json({ message: "Task deleted" });
 };
 
-// MARK COMPLETE (without proof for now, proof added in next step)
-const markComplete = (req, res) => {
-    const { id } = req.params;
+// MARK COMPLETE
+const markComplete = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-    const index = tasks.findIndex(t => t.id === id);
-    if (index === -1) {
-        return res.status(404).json({ message: "Task not found" });
+        const task = await Task.findByIdAndUpdate(
+            id,
+            { 
+                isCompleted: true, 
+                completedAt: new Date().toISOString() 
+            },
+            { new: true }
+        );
+
+        if (!task) {
+            return res.status(404).json({ success: false, message: "Task not found" });
+        }
+
+        res.json({ success: true, message: "Task marked as complete", data: task });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
-
-    tasks[index].isCompleted = true;
-    tasks[index].completedAt = new Date().toISOString();
-
-    res.json({ message: "Task marked as complete", data: tasks[index] });
 };
 
 module.exports = { getTasks, addTask, editTask, deleteTask, markComplete };
