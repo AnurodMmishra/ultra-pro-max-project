@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Features - DeadlineShield</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing_page.css">
+  <style>
+    .features-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+    .features-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .features-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: var(--accent, #00ffff);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .features-subtitle {
+      font-size: 1.2rem;
+      color: var(--muted, #888);
+      line-height: 1.6;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
+      margin-top: 60px;
+    }
+    .feature-card {
+      background: rgba(20,20,20,0.9);
+      border: 1px solid rgba(0,255,255,0.2);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,255,255,0.2);
+      border-color: rgba(0,255,255,0.4);
+    }
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .feature-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: var(--text, #fff);
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .feature-description {
+      color: var(--muted, #888);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .feature-list {
+      text-align: left;
+      color: var(--muted, #888);
+      line-height: 1.8;
+    }
+    .feature-list li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 25px;
+    }
+    .feature-list li:before {
+      content: "▶";
+      position: absolute;
+      left: 0;
+      color: var(--accent, #00ffff);
+    }
+    .back-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 30px;
+      background: var(--accent, #00ffff);
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+    }
+    .back-btn:hover {
+      background: #00e5e5;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="content">
+      <div class="features-container">
+        <div class="features-header">
+          <h1 class="features-title">Professional Features</h1>
+          <p class="features-subtitle">Powerful tools designed for developers who value deadlines and productivity</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <span class="feature-icon">⏰</span>
+            <h2 class="feature-title">Hourly Email Reminders</h2>
+            <p class="feature-description">Never miss a deadline with our intelligent reminder system</p>
+            <ul class="feature-list">
+              <li>Automated hourly email notifications</li>
+              <li>Customizable reminder schedules</li>
+              <li>Priority-based alert system</li>
+              <li>Integration with popular email clients</li>
+              <li>Snooze and reschedule options</li>
+            </ul>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">📸</span>
+            <h2 class="feature-title">Proof-Based Completion</h2>
+            <p class="feature-description">Verify task completion with visual evidence and documentation</p>
+            <ul class="feature-list">
+              <li>Photo and screenshot uploads</li>
+              <li>File attachment support</li>
+              <li>Timestamp verification</li>
+              <li>Geolocation tagging</li>
+              <li>Blockchain-verified proof system</li>
+            </ul>
+          </div>
+
+          <div class="feature-card">
+            <span class="feature-icon">🛡️</span>
+            <h2 class="feature-title">Deadline Enforcement</h2>
+            <p class="feature-description">Smart system that ensures deadlines are met consistently</p>
+            <ul class="feature-list">
+              <li>Automatic escalation system</li>
+              <li>Performance tracking analytics</li>
+              <li>Team accountability metrics</li>
+              <li>Customizable penalty system</li>
+              <li>Real-time deadline monitoring</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <a href="landing_page.html" class="back-btn">← Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

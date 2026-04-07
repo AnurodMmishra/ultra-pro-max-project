@@ -13,7 +13,6 @@
 
 <section class="hero">
 
-  <!-- BACKGROUND CLOCK -->
   <div class="bg-clock" id="clock">
     <div class="clock-inner">
       <div class="hand hour"   id="hour"></div>
@@ -23,15 +22,12 @@
     </div>
   </div>
 
-  <!-- OVERLAY -->
   <div class="overlay"></div>
 
-  <!-- CONTENT -->
   <div class="content">
 
     <div class="badge"><span class="dot"></span> Deadline Enforcement System</div>
 
-    <!-- ✅ UPDATED TAGLINE -->
     <h1 class="heading">
       Is the clock ticking<br>too fast for you to keep up with
       <span class="deadline-word">deadlines?</span>
@@ -42,12 +38,17 @@
     </p>
 
     <div class="features">
-      <div class="feat"><span class="feat-icon">⏰</span> Hourly Email Reminders</div>
-      <div class="feat"><span class="feat-icon">📸</span> Proof-Based Completion</div>
-      <div class="feat"><span class="feat-icon">🛡️</span> Deadline Enforcement</div>
+      <a href="reminders.html" class="feat-link">
+        <div class="feat"><span class="feat-icon">⏰</span> Hourly Email Reminders</div>
+      </a>
+      <a href="proof-system.html" class="feat-link">
+        <div class="feat"><span class="feat-icon">📸</span> Proof-Based Completion</div>
+      </a>
+      <a href="enforcement.html" class="feat-link">
+        <div class="feat"><span class="feat-icon">🛡️</span> Deadline Enforcement</div>
+      </a>
     </div>
 
-    <!-- CARD -->
     <div class="card">
 
       <div class="tabs">
@@ -57,7 +58,7 @@
 
       <div class="form-body">
 
-        <!-- REGISTER -->
+        
         <div class="form-panel active" id="register">
           <div class="field-group">
             <input type="text" id="register-name" placeholder="Full Name" required autocomplete="name">
@@ -70,15 +71,46 @@
             <input type="tel" id="register-phone" placeholder="Mobile number" required autocomplete="tel-national">
             <span class="phone-hint">Choose country (flag) + international dial code, then type your mobile number. Saved as E.164 (e.g. +91…).</span>
           </div>
-          <div class="field-group">
-            <input type="password" id="register-password" placeholder="Password" required autocomplete="new-password">
+          <div class="field-group password-field-group">
+            <div class="password-input-wrapper">
+              <input type="password" id="register-password" placeholder="Password" required autocomplete="new-password">
+              <button class="password-toggle-btn" id="password-toggle-btn" type="button" title="Show/Hide Password">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+              <button class="password-info-btn" id="password-info-btn" type="button" title="Password requirements">ℹ️</button>
+            </div>
+            <div class="password-requirements" id="password-requirements" style="display: none;">
+              <div class="req-title">Password must contain:</div>
+              <div class="req-item" id="req-length">✓ At least 6 characters</div>
+              <div class="req-item" id="req-upper">✓ One uppercase letter (A-Z)</div>
+              <div class="req-item" id="req-lower">✓ One lowercase letter (a-z)</div>
+              <div class="req-item" id="req-number">✓ One number (0-9)</div>
+              <div class="req-item" id="req-special">✓ One special character (!@#$%^&*)</div>
+            </div>
+            <div class="password-error-message" id="password-error-message" style="display: none;">
+              ⚠️ Please read password instructions above
+            </div>
           </div>
           <div class="field-group">
-            <input type="password" id="register-password-confirm" placeholder="Confirm Password" required autocomplete="new-password">
+            <div class="password-input-wrapper">
+              <input type="password" id="register-password-confirm" placeholder="Confirm Password" required autocomplete="new-password">
+              <button class="password-toggle-btn-confirm" id="password-toggle-btn-confirm" type="button" title="Show/Hide Password">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="password-match-error" id="password-match-error" style="display: none;">
+              ⚠️ Passwords do not match
+            </div>
           </div>
           <button class="submit-btn" id="register-btn">Create Account</button>
 
-          <!-- OTP Verification (shown after register) -->
+          
           <div class="otp-panel" id="otp-panel" style="display:none;">
             <div class="otp-title">Verify your account</div>
             <div class="otp-sub">We sent 6‑digit codes to your email and WhatsApp number.</div>
@@ -105,7 +137,7 @@
           <p class="form-footer">Already have an account? <a href="#" data-switch="login">Login</a></p>
         </div>
 
-        <!-- LOGIN -->
+        
         <div class="form-panel" id="login">
           <div class="field-group">
             <input type="email" id="login-email" placeholder="Email Address" required autocomplete="email">

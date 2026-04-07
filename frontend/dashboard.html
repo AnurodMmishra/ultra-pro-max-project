@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<!-- ═══════════ NAVBAR ═══════════ -->
 <nav class="navbar">
   <div class="nav-left">
     <span class="nav-logo">⏰</span>
@@ -34,18 +33,18 @@
   </div>
 
   <div class="nav-right">
-    <!-- Theme toggle -->
+    
     <button class="nav-btn" id="themeBtn">
       <span id="themeIcon">☀️</span>
       <span id="themeText">Light Mode</span>
     </button>
 
-    <!-- Help button -->
+    
     <button class="nav-btn help-nav-btn" id="helpBtn" title="Feature Guide">
       ℹ️ Help
     </button>
 
-    <!-- Profile -->
+    
     <div class="profile-wrap">
       <button class="avatar-btn" id="profileBtn">
         <span id="avatarInitials">U</span>
@@ -54,22 +53,39 @@
         <div class="pd-top">
           <div class="pd-avatar" id="pdAvatar">U</div>
           <div>
-            <p class="pd-name"  id="pdName">Your Name</p>
-            <p class="pd-email" id="pdEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a1d8ced4e1c4ccc0c8cd8fc2cecc">[email&#160;protected]</a></p>
+            <p class="pd-name" id="pdName">Your Name</p>
+            <p class="pd-email" id="pdEmail">email@example.com</p>
             <p class="pd-phone" id="pdPhone">+91 XXXXXXXXXX</p>
+            <div class="pd-status">
+              <span class="pd-status-dot"></span>
+              <span class="pd-status-text">Active</span>
+            </div>
           </div>
         </div>
         <hr class="pd-hr">
-        <button class="pd-item" onclick="openEditProfile()">✏️ Edit Profile</button>
-        <button class="pd-item" onclick="exportTasks()">📥 Export Tasks</button>
+        <button class="pd-item" onclick="openEditProfile()">
+          <span class="pd-item-icon">✏️</span>
+          <span class="pd-item-text">Edit Profile</span>
+        </button>
+        <button class="pd-item" onclick="exportTasks()">
+          <span class="pd-item-icon">📥</span>
+          <span class="pd-item-text">Export Tasks</span>
+        </button>
+        <button class="pd-item" onclick="window.location.href='landing_page.html'">
+          <span class="pd-item-icon">🏠</span>
+          <span class="pd-item-text">Back to Login</span>
+        </button>
         <hr class="pd-hr">
-        <button class="pd-item pd-logout" onclick="logOut()">🚪 Log Out</button>
+        <button class="pd-item pd-logout" onclick="logOut()">
+          <span class="pd-item-icon">🚪</span>
+          <span class="pd-item-text">Log Out</span>
+        </button>
       </div>
     </div>
   </div>
 </nav>
 
-<!-- ═══════════ HELP MODAL ═══════════ -->
+
 <div class="overlay" id="helpOverlay">
   <div class="modal help-modal">
     <div class="modal-head">
@@ -122,7 +138,7 @@
   </div>
 </div>
 
-<!-- ═══════════ EDIT PROFILE MODAL ═══════════ -->
+
 <div class="overlay" id="editOverlay">
   <div class="modal edit-modal">
     <div class="modal-head">
@@ -142,21 +158,41 @@
         <label>WhatsApp Number</label>
         <input type="tel" id="editPhone" placeholder="+91 XXXXXXXXXX">
       </div>
+      <div class="edit-field">
+        <label>Notification Preferences</label>
+        <div class="notification-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="emailNotifications" checked>
+            <span class="checkmark"></span>
+            Email Notifications
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="smsNotifications" checked>
+            <span class="checkmark"></span>
+            SMS Notifications
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="whatsappNotifications" checked>
+            <span class="checkmark"></span>
+            WhatsApp Notifications
+          </label>
+        </div>
+      </div>
       <button class="edit-save-btn" onclick="saveProfile()">Save Changes</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════ ORIGINAL DASHBOARD ═══════════ -->
+
 <div class="dashboard-container">
 
-  <!-- LEFT COLUMN -->
+  
   <div class="left-column">
     <div class="dashboard-header">
       <h1 class="dashboard-title">Progress Zone</h1>
     </div>
 
-    <!-- STREAK (NEW) -->
+    
     <div class="streak-box">
       <span class="streak-fire">🔥</span>
       <div>
@@ -173,11 +209,11 @@
 
   <div class="divider"></div>
 
-  <!-- RIGHT COLUMN -->
+  
   <div class="right-column" id="scrollArea">
     <div class="tasks-wrapper">
 
-      <!-- DEADLINE ALERT CARD (NEW, hidden by default) -->
+      
       <div class="deadline-alert-card" id="deadlineAlertCard" style="display:none;">
         <div class="dac-header">
           <span>🚨 Tasks Due Today or Overdue</span>
@@ -194,7 +230,6 @@
 
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

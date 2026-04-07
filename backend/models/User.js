@@ -51,12 +51,22 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    emailNotifications: {
+        type: Boolean,
+        default: true
+    },
+    smsNotifications: {
+        type: Boolean,
+        default: true
+    },
+    whatsappNotifications: {
+        type: Boolean,
+        default: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
 }, { timestamps: true });
-
-// Password is hashed in authController before save (no pre-save hooks)
 
 module.exports = mongoose.model("User", userSchema);
