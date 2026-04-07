@@ -1,15 +1,15 @@
-// ══════════════════════════════════════════════
-// Authentication Check
-// ══════════════════════════════════════════════
 
-// Redirect to login if not authenticated
+
+
+
+
 if (!localStorage.getItem('token')) {
   window.location.href = 'login.html';
 }
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// API Helper Functions
+
 async function apiCall(endpoint, options = {}) {
   try {
     const token = localStorage.getItem('token');
@@ -39,7 +39,7 @@ async function apiCall(endpoint, options = {}) {
   }
 }
 
-// Task API Functions
+
 const TaskAPI = {
   getAll: () => apiCall('/tasks'),
   create: (taskData) => apiCall('/tasks/add', {
@@ -62,9 +62,9 @@ const TaskAPI = {
   }
 };
 
-// ══════════════════════════════════════════════
-// Dashboard UI Setup
-// ══════════════════════════════════════════════
+
+
+
 
 const ctx = document.getElementById('completionChart').getContext('2d');
 let completedTasks = 0;
@@ -142,7 +142,7 @@ function openAddTaskForm() {
         c.classList.add('selected');
         selectedNotifyType = c.dataset.id;
 
-        // Show/hide email/phone fields
+
         document.getElementById('emailLabel').style.display = selectedNotifyType === 'email' ? 'block' : 'none';
         document.getElementById('phoneLabel').style.display = selectedNotifyType === 'whatsapp' ? 'block' : 'none';
       }
@@ -366,13 +366,43 @@ function refreshUI() {
 
 document.querySelector('.right-column').addEventListener('scroll', applyScrollShrink);
 
-// ══════════════════════════════════════════════
-// User Profile, Theme, Streak
-// ══════════════════════════════════════════════
+
+
+
 
 let userProfile = JSON.parse(localStorage.getItem('ds_profile') || 'null') || {
   name: '', email: '', phone: ''
 };
+
+async function loadUserProfile() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const userData = await response.json();
+        userProfile = {
+          name: userData.name || 'User',
+          email: userData.email || 'user@example.com',
+          phone: userData.phone || '+91 XXXXXXXXXX',
+          emailNotifications: userData.emailNotifications !== false,
+          smsNotifications: userData.smsNotifications !== false,
+          whatsappNotifications: userData.whatsappNotifications !== false
+        };
+        localStorage.setItem('ds_profile', JSON.stringify(userProfile));
+        renderProfile();
+      }
+    } catch (error) {
+      console.error('Failed to load user profile:', error);
+    }
+  } else {
+    renderProfile();
+  }
+}
 
 function renderProfile() {
   const name = userProfile.name || 'No Name';
@@ -386,7 +416,7 @@ function renderProfile() {
   document.getElementById('pdEmail').textContent = email;
   document.getElementById('pdPhone').textContent = phone;
 }
-renderProfile();
+loadUserProfile();
 
 const profileBtn = document.getElementById('profileBtn');
 const profileDropdown = document.getElementById('profileDropdown');
@@ -435,15 +465,13 @@ function markStreakToday() {
   }
 }
 
-// Check at page load: if last completion was NOT today AND NOT yesterday → reset streak to 0
-(function checkStreakOnLoad() {
+function checkStreakOnLoad() {
   const today = new Date().toDateString();
   const yesterday = new Date(Date.now() - 86400000).toDateString();
   const lastDay = localStorage.getItem('ds_streak_lastday');
   let count = parseInt(localStorage.getItem('ds_streak_count') || '0');
 
   if (lastDay && lastDay !== today && lastDay !== yesterday) {
-    // Missed at least one day — reset streak
     count = 0;
     localStorage.setItem('ds_streak_count', 0);
   }
@@ -451,13 +479,6 @@ function markStreakToday() {
   if (document.getElementById('streakCount')) {
     document.getElementById('streakCount').textContent = count;
   }
-})();
-
-// ── HELP MODAL ──
-if (document.getElementById('helpBtn')) {
-  document.getElementById('helpBtn').addEventListener('click', () => {
-    document.getElementById('helpOverlay').classList.add('open');
-  });
 }
 
 function closeHelp() {
@@ -472,13 +493,17 @@ if (document.getElementById('helpOverlay')) {
   });
 }
 
-// ── EDIT PROFILE MODAL ──
 function openEditProfile() {
   profileDropdown.classList.remove('open');
   if (document.getElementById('editName')) {
     document.getElementById('editName').value = userProfile.name;
     document.getElementById('editEmail').value = userProfile.email;
     document.getElementById('editPhone').value = userProfile.phone;
+    
+    document.getElementById('emailNotifications').checked = userProfile.emailNotifications !== false;
+    document.getElementById('smsNotifications').checked = userProfile.smsNotifications !== false;
+    document.getElementById('whatsappNotifications').checked = userProfile.whatsappNotifications !== false;
+    
     document.getElementById('editOverlay').classList.add('open');
   }
 }
@@ -493,12 +518,58 @@ function saveProfile() {
   const name = document.getElementById('editName').value.trim();
   const email = document.getElementById('editEmail').value.trim();
   const phone = document.getElementById('editPhone').value.trim();
+  
+  const emailNotifications = document.getElementById('emailNotifications').checked;
+  const smsNotifications = document.getElementById('smsNotifications').checked;
+  const whatsappNotifications = document.getElementById('whatsappNotifications').checked;
+  
   if (!name || !email) { showToast('⚠️ Name and email are required.'); return; }
-  userProfile = { name, email, phone };
+  
+  userProfile = { 
+    name, 
+    email, 
+    phone,
+    emailNotifications,
+    smsNotifications,
+    whatsappNotifications
+  };
   localStorage.setItem('ds_profile', JSON.stringify(userProfile));
+  
+  const token = localStorage.getItem('token');
+  if (token) {
+    fetch('http://localhost:5000/api/auth/update-profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        emailNotifications,
+        smsNotifications,
+        whatsappNotifications
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.message) {
+        showToast('✅ Profile updated!');
+      } else {
+        showToast('❌ Failed to update profile');
+      }
+    })
+    .catch(err => {
+      console.error('Profile update error:', err);
+      showToast('❌ Server error');
+    });
+  } else {
+    showToast('✅ Profile updated locally!');
+  }
+  
   renderProfile();
   closeEditProfile();
-  showToast('✅ Profile updated!');
 }
 
 if (document.getElementById('editOverlay')) {
@@ -507,7 +578,6 @@ if (document.getElementById('editOverlay')) {
   });
 }
 
-// ── EXPORT TASKS ──
 function exportTasks() {
   profileDropdown.classList.remove('open');
   const cards = document.querySelectorAll('.task-card');
@@ -529,13 +599,11 @@ function exportTasks() {
   showToast('📥 Tasks exported!');
 }
 
-// ── LOG OUT ──
 function logOut() {
   showToast('👋 Logging out…');
   setTimeout(() => window.location.href = 'landing_page.html', 1400);
 }
 
-// ── TOAST ──
 function showToast(msg, duration = 2800) {
   const t = document.getElementById('toast');
   if (t) {
@@ -545,19 +613,14 @@ function showToast(msg, duration = 2800) {
   }
 }
 
-// ══════════════════════════════════════════════
-// Load Tasks on Page Load
-// ══════════════════════════════════════════════
-
 async function loadTasks() {
   try {
-    // If user is currently typing in the add-task form, don't refresh and wipe inputs.
     const active = document.activeElement;
     if (active && active.closest && active.closest('.task-form')) {
       return;
     }
 
-    // Preserve any open task form(s) so periodic refresh doesn't clear user input.
+
     const openForms = Array.from(tasksContainer.querySelectorAll('.task-form'));
     const preserved = openForms.map(form => {
       const values = {
@@ -585,10 +648,10 @@ async function loadTasks() {
       tasks.forEach(task => addTaskCard(task));
     }
 
-    // Re-attach preserved forms at the top (so user's draft stays visible).
+
     preserved.forEach(({ form, values }) => {
       tasksContainer.prepend(form);
-      // Restore input values (in case the form got detached/re-attached)
+
       const setVal = (sel, v) => {
         const el = form.querySelector(sel);
         if (el) el.value = v;
@@ -599,7 +662,7 @@ async function loadTasks() {
       setVal('#taskEmail', values.taskEmail);
       setVal('#taskPhone', values.taskPhone);
 
-      // Restore option UI state
+
       const emailCircle = form.querySelector('.option-circle[data-id="email"]');
       const whatsappCircle = form.querySelector('.option-circle[data-id="whatsapp"]');
       const uploadCircle = form.querySelector('.option-circle[data-id="upload"]');
@@ -626,7 +689,7 @@ async function loadTasks() {
 window.addEventListener('load', () => {
   loadTasks();
   markStreakToday();
-  // Refresh tasks every 30 seconds
+
   setInterval(() => {
     loadTasks();
   }, 30000);

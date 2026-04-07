@@ -1,4 +1,3 @@
-/* ── CLOCK ── */
 function updateClock() {
   const now = new Date();
   const s = now.getSeconds(), m = now.getMinutes(), h = now.getHours() % 12;
@@ -9,7 +8,6 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
-/* ── TABS ── */
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => {
     t.classList.toggle('active', t.dataset.target === name);
@@ -28,7 +26,6 @@ document.querySelectorAll('[data-switch]').forEach(link => {
   });
 });
 
-/* ── TOAST ── */
 function showToast(msg, duration = 3000) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -36,25 +33,18 @@ function showToast(msg, duration = 3000) {
   setTimeout(() => t.classList.remove('show'), duration);
 }
 
-/** Show API JSON errors (503 database, 400 validation, etc.) */
 function showApiError(data) {
-  const parts = [data.message, data.error, data.hint].filter(Boolean);
-  const line = parts.join(' — ');
-  const short = line.length > 200 ? line.slice(0, 197) + '…' : line;
-  showToast('❌ ' + (short || 'Something went wrong'));
+  const shortMessage = data.message || 'Server error';
+  const simplifiedMessage = shortMessage.length > 60 ? 'Server error' : shortMessage;
+  showToast('❌ ' + simplifiedMessage);
   console.warn('API response:', data);
 }
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-/* ── WhatsApp / phone: flags + dial codes (all countries via intl-tel-input) ── */
 function guessInitialCountry() {
-  try {
-    const r = new Intl.Locale(navigator.language).region;
-    return r && /^[a-z]{2}$/i.test(r) ? r.toLowerCase() : 'us';
-  } catch {
-    return 'us';
-  }
+  
+  return 'in';
 }
 
 let registerPhoneIti = null;
@@ -67,11 +57,20 @@ function initRegisterPhone() {
   const input = document.getElementById('register-phone');
   if (!input || typeof window.intlTelInput !== 'function') return;
 
+  
+  if (registerPhoneIti) {
+    registerPhoneIti.destroy();
+    registerPhoneIti = null;
+  }
+
+  
+  input.value = '';
+
   registerPhoneIti = window.intlTelInput(input, {
     utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/utils.js',
     initialCountry: guessInitialCountry(),
     preferredCountries: [
-      'us', 'gb', 'in', 'au', 'ca', 'de', 'fr', 'br', 'mx', 'jp',
+      'in', 'us', 'gb', 'au', 'ca', 'de', 'fr', 'br', 'mx', 'jp',
       'nz', 'sg', 'ae', 'za', 'ng', 'ke', 'eg', 'es', 'it', 'nl', 'se', 'no', 'ie', 'pk', 'bd'
     ],
     separateDialCode: true,
@@ -80,13 +79,12 @@ function initRegisterPhone() {
     dropdownContainer: document.body
   });
 }
-
 function getRegisterPhoneE164() {
   if (!registerPhoneIti) return '';
   let e164 = '';
   try {
     e164 = registerPhoneIti.getNumber ? registerPhoneIti.getNumber() : '';
-  } catch (_) { /* utils may still be loading */ }
+  } catch (_) {  }
   if (e164 && /^\+[\d]+$/.test(e164.replace(/\s/g, ''))) {
     return e164.replace(/\s/g, '');
   }
@@ -101,21 +99,207 @@ function getRegisterPhoneE164() {
 
 initRegisterPhone();
 
-function showOtpPanel({ email, phone }) {
-  pendingVerifyEmail = email || pendingVerifyEmail;
-  pendingVerifyPhone = phone || pendingVerifyPhone;
-  emailVerified = false;
-  phoneVerified = false;
 
-  const panel = document.getElementById('otp-panel');
-  if (panel) panel.style.display = 'block';
-  const status = document.getElementById('otp-status');
-  if (status) status.textContent = 'Enter both OTP codes to verify, then log in.';
+function validatePassword(password) {
+  const requirements = {
+    length: password.length >= 6,
+    upper: /[A-Z]/.test(password),
+    lower: /[a-z]/.test(password),
+    number: /[0-9]/.test(password),
+    special: /[!@#$%^&*]/.test(password)
+  };
+  
+  return requirements;
 }
+
+function updatePasswordRequirements(password) {
+  const reqs = validatePassword(password);
+  
+  Object.keys(reqs).forEach(req => {
+    const element = document.getElementById(`req-${req}`);
+    if (element) {
+      if (reqs[req]) {
+        element.classList.add('valid');
+        element.classList.remove('invalid');
+      } else {
+        element.classList.add('invalid');
+        element.classList.remove('valid');
+      }
+    }
+  });
+  
+  return Object.values(reqs).every(Boolean);
+}
+
+function checkPasswordMatch() {
+  const password = document.getElementById('register-password').value;
+  const confirmPassword = document.getElementById('register-password-confirm').value;
+  const matchError = document.getElementById('password-match-error');
+  
+  if (confirmPassword && password !== confirmPassword) {
+    matchError.style.display = 'block';
+    return false;
+  } else {
+    matchError.style.display = 'none';
+    return true;
+  }
+}
+
+
+document.getElementById('password-info-btn')?.addEventListener('click', () => {
+  const requirements = document.getElementById('password-requirements');
+  const errorMsg = document.getElementById('password-error-message');
+  requirements.style.display = requirements.style.display === 'none' ? 'block' : 'none';
+  if (requirements.style.display === 'block') {
+    errorMsg.style.display = 'none';
+  }
+});
+
+
+document.getElementById('password-toggle-btn')?.addEventListener('click', () => {
+  const passwordInput = document.getElementById('register-password');
+  const toggleBtn = document.getElementById('password-toggle-btn');
+  
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    toggleBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: rgba(0,255,255,0.9); filter: drop-shadow(0 0 3px rgba(0,255,255,0.4));">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    `;
+    toggleBtn.style.animation = 'eyeGlow 0.3s ease-in-out';
+  } else {
+    passwordInput.type = 'password';
+    toggleBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: rgba(255,255,255,0.4);">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 10.07 10.07 0 0 1-5.94 5.94M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/>
+        <line x1="1" y1="12" x2="23" y2="12" style="stroke: rgba(255,255,255,0.6); stroke-width: 2.5;"/>
+      </svg>
+    `;
+    toggleBtn.style.animation = 'eyeDim 0.3s ease-in-out';
+  }
+  
+  setTimeout(() => {
+    toggleBtn.style.animation = '';
+  }, 300);
+});
+
+document.getElementById('password-toggle-btn-confirm')?.addEventListener('click', () => {
+  const confirmPasswordInput = document.getElementById('register-password-confirm');
+  const toggleBtn = document.getElementById('password-toggle-btn-confirm');
+  
+  if (confirmPasswordInput.type === 'password') {
+    confirmPasswordInput.type = 'text';
+    toggleBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: rgba(0,255,255,0.9); filter: drop-shadow(0 0 3px rgba(0,255,255,0.4));">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/>
+      </svg>
+    `;
+    toggleBtn.style.animation = 'eyeGlow 0.3s ease-in-out';
+  } else {
+    confirmPasswordInput.type = 'password';
+    toggleBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: rgba(255,255,255,0.4);">
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 10.07 10.07 0 0 1-5.94 5.94M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"/>
+        <line x1="1" y1="12" x2="23" y2="12" style="stroke: rgba(255,255,255,0.6); stroke-width: 2.5;"/>
+      </svg>
+    `;
+    toggleBtn.style.animation = 'eyeDim 0.3s ease-in-out';
+  }
+  
+  setTimeout(() => {
+    toggleBtn.style.animation = '';
+  }, 300);
+});
+
+
+document.getElementById('register-password')?.addEventListener('input', (e) => {
+  const password = e.target.value;
+  const isValid = updatePasswordRequirements(password);
+  const errorMsg = document.getElementById('password-error-message');
+  
+  if (password && !isValid) {
+    errorMsg.style.display = 'block';
+  } else {
+    errorMsg.style.display = 'none';
+  }
+  
+  checkPasswordMatch();
+});
+
+document.getElementById('register-password-confirm')?.addEventListener('input', checkPasswordMatch);
+
+
+document.getElementById('register-btn')?.addEventListener('click', async () => {
+  const name = document.getElementById('register-name').value.trim();
+  const email = document.getElementById('register-email').value.trim();
+  const phone = getRegisterPhoneE164();
+  const password = document.getElementById('register-password').value.trim();
+  const confirmPassword = document.getElementById('register-password-confirm').value.trim();
+  
+  if (!name || !email || !phone || !password || !confirmPassword) {
+    return showToast('⚠️ Please fill all fields.');
+  }
+  
+  if (!validatePassword(password)) {
+    return showToast('⚠️ Password does not meet requirements.');
+  }
+  
+  if (password !== confirmPassword) {
+    return showToast('⚠️ Passwords do not match.');
+  }
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, password })
+    });
+
+    const responseText = await response.text();
+    let data = {};
+    
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error('Failed to parse JSON response:', e);
+      console.error('Response status:', response.status);
+      console.error('Response text:', responseText);
+      return showToast('❌ Server error - ' + responseText.substring(0, 50));
+    }
+
+    if (!response.ok) {
+      showApiError(data);
+      return;
+    }
+
+    showToast('✅ Registration successful! Please verify your email and phone.');
+    pendingVerifyEmail = email;
+    showOtpPanel({ email });
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    showToast('❌ Registration failed. Please try again.');
+  }
+});
 
 function setOtpStatus(text) {
   const status = document.getElementById('otp-status');
   if (status) status.textContent = text;
+}
+
+function showOtpPanel({ email }) {
+  const panel = document.getElementById('otp-panel');
+  if (panel) {
+    panel.style.display = 'block';
+    const status = document.getElementById('otp-status');
+    if (status) {
+      status.textContent = `Enter both OTP codes to verify, then log in.`;
+    }
+    panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
 
 async function postJson(url, body) {
@@ -130,7 +314,6 @@ async function postJson(url, body) {
   return { res, data };
 }
 
-// OTP button handlers
 document.getElementById('verify-email-otp-btn')?.addEventListener('click', async () => {
   const code = document.getElementById('otp-email')?.value.trim();
   if (!pendingVerifyEmail || !code) return showToast('⚠️ Enter the email OTP.');
@@ -140,6 +323,13 @@ document.getElementById('verify-email-otp-btn')?.addEventListener('click', async
     emailVerified = true;
     setOtpStatus(`Email verified. ${phoneVerified ? 'All set — you can log in.' : 'Now verify phone OTP.'}`);
     showToast('✅ Email verified');
+    
+    if (emailVerified && phoneVerified) {
+      setTimeout(() => {
+        switchTab('login');
+        showToast('✅ Verification complete! Please log in with your credentials.');
+      }, 1000);
+    }
   } catch (e) {
     showToast('❌ ' + e.message);
   }
@@ -154,6 +344,13 @@ document.getElementById('verify-phone-otp-btn')?.addEventListener('click', async
     phoneVerified = true;
     setOtpStatus(`${emailVerified ? 'All set — you can log in.' : 'Phone verified. Now verify email OTP.'}`);
     showToast('✅ Phone verified');
+    
+    if (emailVerified && phoneVerified) {
+      setTimeout(() => {
+        switchTab('login');
+        showToast('✅ Verification complete! Please log in with your credentials.');
+      }, 1000);
+    }
   } catch (e) {
     showToast('❌ ' + e.message);
   }
@@ -181,67 +378,6 @@ document.getElementById('resend-phone-otp-btn')?.addEventListener('click', async
   }
 });
 
-/* ── REGISTER ── */
-document.getElementById('register-btn').addEventListener('click', async () => {
-  const name = document.getElementById('register-name').value.trim();
-  const email = document.getElementById('register-email').value.trim();
-  const pass = document.getElementById('register-password').value.trim();
-  const confirm = document.getElementById('register-password-confirm').value.trim();
-  const phone = getRegisterPhoneE164();
-
-  if (!name || !email || !phone || !pass || !confirm) return showToast('⚠️ Please fill in all fields.');
-  if (pass !== confirm) return showToast('⚠️ Passwords do not match.');
-  if (pass.length < 6)  return showToast('⚠️ Password must be at least 6 characters.');
-  if (phone.replace(/\D/g, '').length < 8) return showToast('⚠️ Please enter a complete WhatsApp number.');
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password: pass, phone })
-    });
-
-    // Read response once as text, then parse
-    const responseText = await response.text();
-    let data = {};
-    
-    try {
-      data = JSON.parse(responseText);
-    } catch (e) {
-      console.error('Failed to parse JSON response:', e);
-      console.error('Response status:', response.status);
-      console.error('Response text:', responseText);
-      return showToast('❌ Server error - ' + responseText.substring(0, 50));
-    }
-
-    if (!response.ok) {
-      return showApiError(data);
-    }
-
-    // New flow: OTP verification required
-    if (data.requiresVerification) {
-      showToast('✅ OTP sent. Please verify.');
-      showOtpPanel({ email: data.user?.email || email, phone: data.user?.phone || phone });
-      return;
-    }
-
-    // Backward compatible (if server returns token)
-    if (data.token) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      showToast('✅ Account created! Redirecting…');
-      setTimeout(() => window.location.href = 'dashboard.html', 1500);
-      return;
-    }
-
-    showToast('✅ Registered. Please verify OTP then log in.');
-  } catch (error) {
-    console.error('Registration error:', error);
-    showToast('❌ ' + error.message);
-  }
-});
-
-/* ── LOGIN ── */
 document.getElementById('login-btn').addEventListener('click', async () => {
   const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-password').value.trim();
@@ -254,7 +390,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
       body: JSON.stringify({ email, password: pass })
     });
 
-    // Read response once as text, then parse
     const responseText = await response.text();
     let data = {};
     
@@ -268,7 +403,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     }
 
     if (!response.ok) {
-      // If verification required, show OTP panel on register tab
       if (response.status === 403 && (data.needsEmailVerification || data.needsPhoneVerification)) {
         pendingVerifyEmail = email;
         switchTab('register');
@@ -278,7 +412,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
       return showApiError(data);
     }
 
-    // Store token and user data
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify(data.user));
 
