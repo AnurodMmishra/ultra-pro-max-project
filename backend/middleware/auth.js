@@ -12,6 +12,7 @@ const authMiddleware = (req, res, next) => {
             return res.status(401).json({ message: "No token provided" });
         }
 
+<<<<<<< HEAD
         const jwtSecret = process.env.JWT_SECRET;
         if (!jwtSecret) {
             console.error("JWT_SECRET environment variable is not set");
@@ -19,6 +20,9 @@ const authMiddleware = (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, jwtSecret);
+=======
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || "your_secret_key_change_in_production");
+>>>>>>> origin/feature/new-pages-and-database-cleanup
         req.user = decoded;
         next();
     } catch (error) {

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proof System - DeadlineShield</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing_page.css">
+  <style>
+    .page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+    .page-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .page-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: var(--accent, #00ffff);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .page-subtitle {
+      font-size: 1.2rem;
+      color: var(--muted, #888);
+      line-height: 1.6;
+    }
+    .proof-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    .showcase-content h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      color: var(--text, #fff);
+      margin-bottom: 20px;
+    }
+    .showcase-content p {
+      color: var(--muted, #888);
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+    .showcase-image {
+      background: rgba(0,255,255,0.1);
+      border: 2px solid rgba(0,255,255,0.3);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .proof-types {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    .proof-card {
+      background: rgba(20,20,20,0.9);
+      border: 1px solid rgba(0,255,255,0.2);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .proof-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,255,255,0.2);
+    }
+    .proof-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+    }
+    .proof-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      color: var(--accent, #00ffff);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .proof-desc {
+      color: var(--muted, #888);
+      line-height: 1.5;
+    }
+    .tech-stack {
+      background: rgba(20,20,20,0.9);
+      border: 1px solid rgba(0,255,255,0.2);
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 40px;
+    }
+    .tech-stack h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: var(--accent, #00ffff);
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+    .tech-item {
+      padding: 20px;
+      background: rgba(0,255,255,0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(0,255,255,0.1);
+    }
+    .tech-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: var(--text, #fff);
+      margin-bottom: 5px;
+    }
+    .tech-desc {
+      color: var(--muted, #888);
+      font-size: 0.85rem;
+    }
+    .back-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: var(--accent, #00ffff);
+      color: #000;
+      text-decoration: none;
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 0.3s;
+    }
+    .back-btn:hover {
+      background: #00e5e5;
+      transform: translateY(-2px);
+    }
+    @media (max-width: 768px) {
+      .proof-showcase {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="overlay"></div>
+    <div class="content">
+      <div class="page-container">
+        <div class="page-header">
+          <h1 class="page-title">📸 Proof-Based Completion</h1>
+          <p class="page-subtitle">Verify task completion with immutable evidence and blockchain-secured documentation</p>
+        </div>
+
+        <div class="proof-showcase">
+          <div class="showcase-content">
+            <h3>Verify with Confidence</h3>
+            <p>Our proof system ensures every completed task is backed by verifiable evidence, eliminating disputes and providing complete transparency in project management.</p>
+            <p>Upload photos, screenshots, documents, and other proof materials that are timestamped and secured with blockchain technology.</p>
+            <a href="landing_page.html" class="back-btn">← Back to Home</a>
+          </div>
+          <div class="showcase-image">
+            🔒📸
+          </div>
+        </div>
+
+        <div class="proof-types">
+          <div class="proof-card">
+            <span class="proof-icon">📷</span>
+            <h4 class="proof-title">Photo Evidence</h4>
+            <p class="proof-desc">Upload photos with automatic timestamp and geolocation verification</p>
+          </div>
+          <div class="proof-card">
+            <span class="proof-icon">📄</span>
+            <h4 class="proof-title">Document Upload</h4>
+            <p class="proof-desc">Support for PDFs, Word docs, spreadsheets and other file formats</p>
+          </div>
+          <div class="proof-card">
+            <span class="proof-icon">🔗</span>
+            <h4 class="proof-title">Blockchain Secured</h4>
+            <p class="proof-desc">Immutable proof records stored on distributed ledger</p>
+          </div>
+          <div class="proof-card">
+            <span class="proof-icon">📍</span>
+            <h4 class="proof-title">Geolocation Tags</h4>
+            <p class="proof-desc">GPS coordinates to verify work location and authenticity</p>
+          </div>
+          <div class="proof-card">
+            <span class="proof-icon">⏱️</span>
+            <h4 class="proof-title">Time Verification</h4>
+            <p class="proof-desc">Precise timestamping to verify completion timing</p>
+          </div>
+          <div class="proof-card">
+            <span class="proof-icon">🔐</span>
+            <h4 class="proof-title">Digital Signatures</h4>
+            <p class="proof-desc">Cryptographic signatures for authenticity verification</p>
+          </div>
+        </div>
+
+        <div class="tech-stack">
+          <h3>Technology Stack</h3>
+          <div class="tech-grid">
+            <div class="tech-item">
+              <div class="tech-name">IPFS Storage</div>
+              <div class="tech-desc">Decentralized file storage</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-name">Ethereum Blockchain</div>
+              <div class="tech-desc">Smart contract verification</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-name">AI Analysis</div>
+              <div class="tech-desc">Automated proof validation</div>
+            </div>
+            <div class="tech-item">
+              <div class="tech-name">Encryption</div>
+              <div class="tech-desc">End-to-end data protection</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
