@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OTP Verification - DeadlineShield</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing_page.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+    }
+    .otp-container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: rgba(20,20,20,0.9);
+      border: 1px solid rgba(0,255,255,0.2);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .otp-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .otp-header h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent, #00ffff);
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .otp-header p {
+      color: var(--muted, #888);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+    .otp-section {
+      margin-bottom: 25px;
+    }
+    .otp-section h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--text, #fff);
+      font-size: 1rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .otp-input-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .otp-input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid var(--border, #333);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      color: var(--text, #fff);
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+    .otp-btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: var(--accent, #00ffff);
+      color: #111;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .otp-btn:hover {
+      opacity: 0.85;
+    }
+    .resend-btn {
+      background: var(--green, #00ff88);
+      font-size: 0.85rem;
+      padding: 8px 16px;
+    }
+    .status-message {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .status-success {
+      background: rgba(0,255,0,0.1);
+      border: 1px solid rgba(0,255,0,0.3);
+      color: #00ff88;
+    }
+    .status-error {
+      background: rgba(255,0,0,0.1);
+      border: 1px solid rgba(255,0,0,0.3);
+      color: #ff6666;
+    }
+    .status-info {
+      background: rgba(0,255,255,0.1);
+      border: 1px solid rgba(0,255,255,0.3);
+      color: var(--accent, #00ffff);
+    }
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--muted, #888);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .close-btn:hover {
+      color: var(--text, #fff);
+    }
+  </style>
+</head>
+<body>
+  <div class="otp-container">
+    <button class="close-btn" onclick="window.close()">✕</button>
+    
+    <div class="otp-header">
+      <h2>🔐 OTP Verification</h2>
+      <p>Verify your email and phone number to complete registration</p>
+    </div>
+
+    <div class="otp-section">
+      <h3>📧 Email Verification</h3>
+      <div class="otp-input-group">
+        <input type="text" id="otp-email" class="otp-input" placeholder="Enter email OTP" maxlength="6">
+        <button class="otp-btn" onclick="verifyEmailOTP()">Verify</button>
+      </div>
+      <button class="otp-btn resend-btn" onclick="resendEmailOTP()">Resend Email OTP</button>
+      <div id="email-status" class="status-message" style="display: none;"></div>
+    </div>
+
+    <div class="otp-section">
+      <h3>📱 Phone Verification</h3>
+      <div class="otp-input-group">
+        <input type="text" id="otp-phone" class="otp-input" placeholder="Enter phone OTP" maxlength="6">
+        <button class="otp-btn" onclick="verifyPhoneOTP()">Verify</button>
+      </div>
+      <button class="otp-btn resend-btn" onclick="resendPhoneOTP()">Resend Phone OTP</button>
+      <div id="phone-status" class="status-message" style="display: none;"></div>
+    </div>
+
+    <div id="overall-status" class="status-message status-info">
+      Please verify both email and phone OTP codes
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+      <button class="otp-btn" onclick="checkAndClose()" style="background: var(--green, #00ff88); padding: 12px 30px;">
+        ✅ Complete Verification
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = 'http://localhost:5000/api';
+    let pendingVerifyEmail = '';
+    let emailVerified = false;
+    let phoneVerified = false;
+
+    // Get email from parent window or localStorage
+    function initializeOTP() {
+      try {
+        // Try to get email from the parent window
+        if (window.opener && window.opener.pendingVerifyEmail) {
+          pendingVerifyEmail = window.opener.pendingVerifyEmail;
+        } else {
+          // Fallback to localStorage
+          const userData = JSON.parse(localStorage.getItem('user') || '{}');
+          pendingVerifyEmail = userData.email || '';
+        }
+        
+        if (!pendingVerifyEmail) {
+          showStatus('overall-status', 'No email found for verification. Please register first.', 'error');
+        }
+      } catch (error) {
+        console.error('Failed to initialize OTP:', error);
+        showStatus('overall-status', 'Failed to load user data. Please try again.', 'error');
+      }
+    }
+
+    async function verifyEmailOTP() {
+      const code = document.getElementById('otp-email').value.trim();
+      if (!pendingVerifyEmail || !code) {
+        showStatus('email-status', 'Please enter the email OTP code.', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/verify-email-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingVerifyEmail, code })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          showStatus('email-status', data.message || 'Email verification failed.', 'error');
+          return;
+        }
+
+        emailVerified = true;
+        showStatus('email-status', '✅ Email verified successfully!', 'success');
+        document.getElementById('otp-email').disabled = true;
+        updateOverallStatus();
+      } catch (error) {
+        showStatus('email-status', 'Network error. Please try again.', 'error');
+      }
+    }
+
+    async function verifyPhoneOTP() {
+      const code = document.getElementById('otp-phone').value.trim();
+      if (!pendingVerifyEmail || !code) {
+        showStatus('phone-status', 'Please enter the phone OTP code.', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/verify-phone-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingVerifyEmail, code })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          showStatus('phone-status', data.message || 'Phone verification failed.', 'error');
+          return;
+        }
+
+        phoneVerified = true;
+        showStatus('phone-status', '✅ Phone verified successfully!', 'success');
+        document.getElementById('otp-phone').disabled = true;
+        updateOverallStatus();
+      } catch (error) {
+        showStatus('phone-status', 'Network error. Please try again.', 'error');
+      }
+    }
+
+    async function resendEmailOTP() {
+      if (!pendingVerifyEmail) {
+        showStatus('email-status', 'No email found. Please register first.', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/resend-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingVerifyEmail, type: 'email' })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          showStatus('email-status', data.message || 'Failed to resend email OTP.', 'error');
+          return;
+        }
+
+        showStatus('email-status', '📧 Email OTP sent successfully!', 'success');
+      } catch (error) {
+        showStatus('email-status', 'Network error. Please try again.', 'error');
+      }
+    }
+
+    async function resendPhoneOTP() {
+      if (!pendingVerifyEmail) {
+        showStatus('phone-status', 'No email found. Please register first.', 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/resend-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: pendingVerifyEmail, type: 'phone' })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          showStatus('phone-status', data.message || 'Failed to resend phone OTP.', 'error');
+          return;
+        }
+
+        showStatus('phone-status', '📱 Phone OTP sent successfully!', 'success');
+      } catch (error) {
+        showStatus('phone-status', 'Network error. Please try again.', 'error');
+      }
+    }
+
+    function showStatus(elementId, message, type) {
+      const element = document.getElementById(elementId);
+      element.textContent = message;
+      element.className = `status-message status-${type}`;
+      element.style.display = 'block';
+    }
+
+    function updateOverallStatus() {
+      const statusElement = document.getElementById('overall-status');
+      
+      if (emailVerified && phoneVerified) {
+        showStatus('overall-status', '✅ All verifications complete! You can now log in.', 'success');
+      } else if (emailVerified) {
+        showStatus('overall-status', '📧 Email verified. Please verify your phone number.', 'info');
+      } else if (phoneVerified) {
+        showStatus('overall-status', '📱 Phone verified. Please verify your email.', 'info');
+      } else {
+        showStatus('overall-status', 'Please verify both email and phone OTP codes', 'info');
+      }
+    }
+
+    function checkAndClose() {
+      if (emailVerified && phoneVerified) {
+        showStatus('overall-status', '✅ Verification complete! Closing window...', 'success');
+        setTimeout(() => {
+          window.close();
+        }, 1500);
+      } else {
+        showStatus('overall-status', '⚠️ Please complete both verifications before closing.', 'error');
+      }
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', initializeOTP);
+
+    // Handle Enter key for OTP inputs
+    document.getElementById('otp-email').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') verifyEmailOTP();
+    });
+    
+    document.getElementById('otp-phone').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') verifyPhoneOTP();
+    });
+  </script>
+</body>
+</html>

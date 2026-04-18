@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deadline Shield API</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 42rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    code { background: #f0f0f0; padding: 0.15rem 0.35rem; border-radius: 4px; }
+    a { color: #0b57d0; }
+    .warn { background: #fff8e6; border: 1px solid #e6c200; padding: 0.75rem 1rem; border-radius: 8px; margin: 1rem 0; }
+    ul { padding-left: 1.25rem; }
+  </style>
+</head>
+<body>
+  <h1>Deadline Shield backend</h1>
+  <p>If you see this page, the API server is running.</p>
+  <div class="warn">
+    <strong>Use <code>http://</code> not <code>https://</code></strong> — there is no SSL on port 5000.  
+    If the browser shows “error loading” or a security warning, check the address bar starts with <code>http://localhost:5000</code>.
+  </div>
+  <p>Quick checks:</p>
+  <ul>
+    <li><a href="/api/health">/api/health</a> — JSON: is MongoDB connected?</li>
+    <li><a href="/api">/api</a> — JSON list of base routes</li>
+  </ul>
+  <p>Start the server from the <code>backend</code> folder: <code>npm run dev</code></p>
+</body>
+</html>
