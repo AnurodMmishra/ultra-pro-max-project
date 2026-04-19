@@ -9,7 +9,11 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     },
     tls: {
+<<<<<<< HEAD
+        rejectUnauthorized: true
+=======
         rejectUnauthorized: false
+>>>>>>> origin/feature/new-pages-and-database-cleanup
     }
 });
 

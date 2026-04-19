@@ -1,3 +1,876 @@
+<<<<<<< HEAD
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>DeadlineShield — Dashboard</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <meta
+            http-equiv="Cache-Control"
+            content="no-cache, no-store, must-revalidate"
+        />
+        <link rel="stylesheet" href="dashboard.css?v=2" />
+        <link rel="stylesheet" href="dashboard_settings.css" />
+        <link rel="stylesheet" href="dashboard_modes.css" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="nav-left">
+                <span class="nav-logo">⏰</span>
+                <span class="nav-brand">DeadlineShield</span>
+            </div>
+
+            <div class="nav-center">
+                <div class="mode-switcher">
+                    <button
+                        class="mode-btn active"
+                        id="personalMode"
+                        onclick="switchToPersonal()"
+                    >
+                        <span class="mode-icon">👤</span>
+                        <span class="mode-text">Personal</span>
+                    </button>
+                    <button
+                        class="mode-btn"
+                        id="professionalMode"
+                        onclick="switchToProfessional()"
+                    >
+                        <span class="mode-icon">🏢</span>
+                        <span class="mode-text">Professional</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="nav-right">
+                <button class="nav-btn" id="themeBtn">
+                    <span id="themeIcon">☀️</span>
+                    <span id="themeText">Light Mode</span>
+                </button>
+
+                <button
+                    class="nav-btn help-nav-btn"
+                    id="helpBtn"
+                    title="Feature Guide"
+                >
+                    ℹ️ Help
+                </button>
+
+                <div class="profile-wrap">
+                    <button class="avatar-btn" id="profileBtn">
+                        <span id="avatarInitials">U</span>
+                    </button>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="pd-top">
+                            <div class="pd-avatar" id="pdAvatar">U</div>
+                            <div>
+                                <p class="pd-name" id="pdName">Your Name</p>
+                                <p class="pd-email" id="pdEmail">
+                                    email@example.com
+                                </p>
+                                <p class="pd-phone" id="pdPhone">
+                                    +91 XXXXXXXXXX
+                                </p>
+                                <div class="pd-status">
+                                    <span class="pd-status-dot"></span>
+                                    <span class="pd-status-text">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="pd-hr" />
+                        <button class="pd-item" onclick="openEditProfile()">
+                            <span class="pd-item-icon">✏️</span>
+                            <span class="pd-item-text">Edit Profile</span>
+                        </button>
+                        <button class="pd-item" onclick="openSettings()">
+                            <span class="pd-item-icon">⚙️</span>
+                            <span class="pd-item-text">Settings</span>
+                        </button>
+                        <button class="pd-item" onclick="exportTasks()">
+                            <span class="pd-item-icon">📥</span>
+                            <span class="pd-item-text">Export Tasks</span>
+                        </button>
+                        <button
+                            class="pd-item"
+                            onclick="window.location.href = 'landing_page.html'"
+                        >
+                            <span class="pd-item-icon">🏠</span>
+                            <span class="pd-item-text">Back to Login</span>
+                        </button>
+                        <hr class="pd-hr" />
+                        <button class="pd-item pd-logout" onclick="logOut()">
+                            <span class="pd-item-icon">🚪</span>
+                            <span class="pd-item-text">Log Out</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Help Modal -->
+        <div class="overlay" id="helpOverlay">
+            <div class="modal help-modal">
+                <div class="modal-head">
+                    <h2>Feature Guide</h2>
+                    <button class="modal-x" onclick="closeHelp()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="help-card">
+                        <div class="help-card-icon">🔥</div>
+                        <div>
+                            <h3>Streak Counter</h3>
+                            <p>
+                                Your streak tracks your
+                                <strong>daily commitment</strong>. If you
+                                complete
+                                <strong>at least one task on a given day</strong
+                                >, your streak increases by 1. If you complete
+                                <strong>zero tasks on a day</strong>, your
+                                streak resets back to 0. It doesn't matter how
+                                many tasks you finish — just one is enough to
+                                keep the streak alive and growing.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">📊</div>
+                        <div>
+                            <h3>Progress Zone (Pie Chart)</h3>
+                            <p>
+                                The pie chart in the left panel shows a live
+                                breakdown of your
+                                <strong>completed vs pending tasks</strong>. The
+                                percentage updates every time you complete or
+                                delete a task. Use it to get a quick snapshot of
+                                how much work is done and how much remains.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">🚨</div>
+                        <div>
+                            <h3>Deadline Alert Card</h3>
+                            <p>
+                                When a task's deadline is
+                                <strong>today or already overdue</strong>, a red
+                                alert card appears at the top of your task list.
+                                This is your urgent attention zone. Tasks in
+                                this card pulse red to grab your focus. Complete
+                                them and upload proof to stop the reminders.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">📸</div>
+                        <div>
+                            <h3>Proof of Completion</h3>
+                            <p>
+                                For tasks where you selected
+                                <strong>"Upload photo as proof"</strong>, you
+                                must upload an image to mark the task complete.
+                                This makes completion
+                                <strong>verifiable</strong> — you can't just
+                                click done without evidence. Once uploaded,
+                                email reminders for that task stop immediately.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">📥</div>
+                        <div>
+                            <h3>Export Tasks</h3>
+                            <p>
+                                Found in the <strong>Profile menu</strong> (top
+                                right avatar). Downloads all your current tasks
+                                as a <strong>CSV file</strong> — a spreadsheet
+                                you can open in Excel or Google Sheets. Each row
+                                shows the task name, deadline, and whether it is
+                                completed or pending. Useful if you want to
+                                <strong>keep a record</strong> of your work,
+                                share your task list with a teacher or manager,
+                                or back up your tasks.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">⚙️</div>
+                        <div>
+                            <h3>Settings & Preferences</h3>
+                            <p>
+                                Access the <strong>Settings</strong> from your
+                                profile dropdown to customize your experience.
+                                You can configure notification preferences,
+                                theme appearance, task management options, and
+                                security settings. Changes are automatically
+                                saved and applied across your session.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">🔔</div>
+                        <div>
+                            <h3>Notification System</h3>
+                            <p>
+                                <strong>Email notifications</strong> are sent to
+                                remind you of upcoming deadlines. You can
+                                customize reminder times in Settings.
+                                Notifications stop automatically when a task is
+                                completed with proof. Make sure your email
+                                address is correct in your profile.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">🎨</div>
+                        <div>
+                            <h3>Theme & Display</h3>
+                            <p>
+                                Switch between
+                                <strong>Light and Dark themes</strong> using the
+                                theme toggle in the navigation bar. Your
+                                preference is saved automatically. The interface
+                                adapts to provide optimal visibility in
+                                different lighting conditions.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">📱</div>
+                        <div>
+                            <h3>Mobile & Responsive</h3>
+                            <p>
+                                DeadlineShield works seamlessly on
+                                <strong>mobile devices</strong>. The interface
+                                automatically adjusts to provide the best
+                                experience on phones, tablets, and desktop
+                                computers. All features are fully functional
+                                across devices.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">🔒</div>
+                        <div>
+                            <h3>Privacy & Security</h3>
+                            <p>
+                                Your data is
+                                <strong>securely stored</strong> and protected.
+                                Sessions automatically timeout for security. You
+                                can configure additional security options in
+                                Settings. We never share your personal
+                                information with third parties.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="help-card">
+                        <div class="help-card-icon">💡</div>
+                        <div>
+                            <h3>Tips & Best Practices</h3>
+                            <p>
+                                <strong>• Set realistic deadlines</strong> to
+                                stay motivated<br />
+                                <strong>• Upload proof immediately</strong>
+                                after completing tasks<br />
+                                <strong>• Check daily</strong> to maintain your
+                                streak<br />
+                                <strong>• Export regularly</strong> for backup
+                                purposes<br />
+                                <strong>• Keep profile updated</strong> for
+                                proper notifications
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Modal -->
+        <div class="overlay" id="editOverlay">
+            <div class="modal edit-modal">
+                <div class="modal-head">
+                    <h2>Edit Profile</h2>
+                    <button class="modal-x" onclick="closeEditProfile()">
+                        ✕
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="edit-field">
+                        <label>Full Name</label>
+                        <input
+                            type="text"
+                            id="editName"
+                            placeholder="Your full name"
+                        />
+                    </div>
+                    <div class="edit-field">
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            id="editEmail"
+                            placeholder="you@email.com"
+                        />
+                    </div>
+                    <div class="edit-field">
+                        <label>WhatsApp Number</label>
+                        <input
+                            type="tel"
+                            id="editPhone"
+                            placeholder="+91 XXXXXXXXXX"
+                        />
+                    </div>
+                    <div class="edit-field">
+                        <label>Notification Preferences</label>
+                        <div class="notification-options">
+                            <label class="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    id="emailNotifications"
+                                    checked
+                                />
+                                <span class="checkmark"></span>
+                                Email Notifications
+                            </label>
+                            <label class="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    id="smsNotifications"
+                                    checked
+                                />
+                                <span class="checkmark"></span>
+                                SMS Notifications
+                            </label>
+                        </div>
+                    </div>
+                    <button class="edit-save-btn" onclick="saveProfile()">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="overlay" id="settingsOverlay">
+            <div class="modal settings-modal">
+                <div class="modal-head">
+                    <h2>Settings</h2>
+                    <button class="modal-x" onclick="closeSettings()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-section">
+                        <h3>🔔 Notification Settings</h3>
+                        <div class="settings-field">
+                            <label>Default Reminder Time</label>
+                            <select id="reminderTime">
+                                <option value="1">1 hour before</option>
+                                <option value="2">2 hours before</option>
+                                <option value="6">6 hours before</option>
+                                <option value="12">12 hours before</option>
+                                <option value="24">1 day before</option>
+                            </select>
+                        </div>
+                        <div class="settings-field">
+                            <label>Task Completion Sound</label>
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="completionSound"
+                                    checked
+                                />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>🎨 Appearance</h3>
+                        <div class="settings-field">
+                            <label>Default Theme</label>
+                            <select id="defaultTheme">
+                                <option value="light">Light Mode</option>
+                                <option value="dark">Dark Mode</option>
+                                <option value="auto">Auto (System)</option>
+                            </select>
+                        </div>
+                        <div class="settings-field">
+                            <label>Compact View</label>
+                            <label class="switch">
+                                <input type="checkbox" id="compactView" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>📊 Task Management</h3>
+                        <div class="settings-field">
+                            <label>Auto-delete Completed Tasks</label>
+                            <select id="autoDelete">
+                                <option value="never">Never</option>
+                                <option value="7">After 7 days</option>
+                                <option value="30">After 30 days</option>
+                                <option value="90">After 90 days</option>
+                            </select>
+                        </div>
+                        <div class="settings-field">
+                            <label>Default Task Priority</label>
+                            <select id="defaultPriority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>🔒 Privacy & Security</h3>
+                        <div class="settings-field">
+                            <label>Session Timeout</label>
+                            <select id="sessionTimeout">
+                                <option value="30">30 minutes</option>
+                                <option value="60" selected>1 hour</option>
+                                <option value="240">4 hours</option>
+                                <option value="1440">1 day</option>
+                            </select>
+                        </div>
+                        <div class="settings-field">
+                            <label>Two-Factor Authentication</label>
+                            <label class="switch">
+                                <input type="checkbox" id="twoFactorAuth" />
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button
+                            class="settings-btn save"
+                            onclick="saveSettings()"
+                        >
+                            Save Settings
+                        </button>
+                        <button
+                            class="settings-btn reset"
+                            onclick="resetSettings()"
+                        >
+                            Reset to Default
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personal Dashboard -->
+        <div class="personal-dashboard" id="personalDashboard">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Task Management</h1>
+                <button class="add-task-btn" onclick="addTaskCard()">
+                    + Add Task
+                </button>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="left-column">
+                    <div class="dashboard-header">
+                        <h1 class="dashboard-title">Progress Zone</h1>
+                    </div>
+
+                    <div class="streak-box">
+                        <span class="streak-fire">🔥</span>
+                        <div>
+                            <p class="streak-num" id="streakCount">0</p>
+                            <p class="streak-label">Day Streak</p>
+                        </div>
+                    </div>
+
+                    <div class="pie-container">
+                        <canvas
+                            id="completionChart"
+                            width="200"
+                            height="200"
+                        ></canvas>
+                        <p class="pie-text" id="completionText">
+                            0% of tasks completed
+                        </p>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="right-column" id="scrollArea">
+                    <div
+                        class="deadline-alert-card"
+                        id="deadlineAlertCard"
+                        style="display: none"
+                    >
+                        <div class="dac-header">
+                            <span>🚨 Tasks Due Today or Overdue</span>
+                            <button
+                                class="dac-close"
+                                onclick="
+                                    document.getElementById(
+                                        'deadlineAlertCard',
+                                    ).style.display = 'none'
+                                "
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div class="dac-list" id="dacList"></div>
+                    </div>
+
+                    <div class="tasks-container"></div>
+
+                    <!-- Add Another Task Container -->
+                    <div id="addAnotherContainer"></div>
+
+                    <!-- Task History Panel -->
+                    <div class="task-history-panel" id="taskHistoryPanel">
+                        <div
+                            class="history-panel-header"
+                            onclick="toggleHistoryPanel()"
+                        >
+                            <span>📋 Task History</span>
+                            <button
+                                class="history-toggle-btn"
+                                id="historyToggleBtn"
+                            >
+                                ▲
+                            </button>
+                        </div>
+                        <div class="history-panel-body" id="historyPanelBody">
+                            <div id="personalHistoryList">
+                                <p
+                                    style="
+                                        color: var(--muted);
+                                        text-align: center;
+                                        padding: 16px 0;
+                                        font-size: 0.85rem;
+                                    "
+                                >
+                                    No task history yet
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Dashboard -->
+        <div class="professional-dashboard" id="professionalDashboard">
+
+            <!-- Role navigation tabs -->
+            <div class="prof-role-nav">
+                <button class="prof-role-tab active" id="profTab-student" onclick="switchProfTab('student')">
+                    <span class="prof-tab-icon">👨‍🎓</span>
+                    <span class="prof-tab-label">Student</span>
+                </button>
+                <button class="prof-role-tab" id="profTab-faculty" onclick="switchProfTab('faculty')">
+                    <span class="prof-tab-icon">👨‍🏫</span>
+                    <span class="prof-tab-label">Faculty</span>
+                </button>
+                <button class="prof-role-tab" id="profTab-admin" onclick="switchProfTab('admin')">
+                    <span class="prof-tab-icon">👨‍💼</span>
+                    <span class="prof-tab-label">Admin</span>
+                </button>
+            </div>
+
+            <!-- ─── STUDENT PANEL ─────────────────────── -->
+            <div class="prof-panel active" id="profPanel-student">
+
+                <!-- Login View (Hidden by default - auto-login for authenticated users) -->
+                <div class="prof-login-view" id="profLogin-student" style="display: none;">
+                    <div class="prof-login-card">
+                        <div class="prof-login-avatar">👨‍🎓</div>
+                        <h2 class="prof-login-title">Student Access</h2>
+                        <p class="prof-login-sub">Sign in with your DeadlineShield credentials.<br>Your account must be registered as <strong>Student</strong>.</p>
+                        <div class="prof-login-form">
+                            <input type="email" id="stu-login-email" class="prof-input" placeholder="Email address" autocomplete="email" />
+                            <input type="password" id="stu-login-password" class="prof-input" placeholder="Password" autocomplete="current-password" />
+                            <div class="prof-login-error" id="stu-login-error"></div>
+                            <button class="prof-login-btn" onclick="professionalLogin('student')">
+                                Sign in as Student
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard View -->
+                <div class="prof-dash-view" id="profDash-student" style="display:none;">
+                    <div class="prof-dash-topbar">
+                        <div class="prof-dash-welcome">
+                            <div class="prof-dash-avatar" id="stu-avatar">S</div>
+                            <div>
+                                <p class="prof-dash-name" id="stu-name">Student</p>
+                                <p class="prof-dash-role">Student · DeadlineShield</p>
+                            </div>
+                        </div>
+                        <button class="prof-signout-btn" onclick="professionalLogout('student')">Sign Out</button>
+                    </div>
+
+                    <!-- Counters -->
+                    <div class="prof-counters">
+                        <div class="prof-counter-card c-blue">
+                            <div class="prof-counter-num" id="stu-c-assigned">0</div>
+                            <div class="prof-counter-lbl">Assigned</div>
+                        </div>
+                        <div class="prof-counter-card c-green">
+                            <div class="prof-counter-num" id="stu-c-completed">0</div>
+                            <div class="prof-counter-lbl">Completed</div>
+                        </div>
+                        <div class="prof-counter-card c-red">
+                            <div class="prof-counter-num" id="stu-c-pending">0</div>
+                            <div class="prof-counter-lbl">Pending</div>
+                        </div>
+                    </div>
+
+                    <!-- Task list -->
+                    <div class="prof-section-card">
+                        <div class="prof-section-head">
+                            <h3>📚 My Assigned Tasks</h3>
+                            <span class="prof-section-badge" id="stu-task-badge">0 tasks</span>
+                        </div>
+                        <div id="stu-task-list" class="prof-task-list">
+                            <div class="prof-empty-state">No assignments yet.<br>Your faculty will assign tasks here.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── FACULTY PANEL ──────────────────────── -->
+            <div class="prof-panel" id="profPanel-faculty" style="display:none;">
+
+                <!-- Login View (Hidden by default - auto-login for authenticated users) -->
+                <div class="prof-login-view" id="profLogin-faculty" style="display: none;">
+                    <div class="prof-login-card">
+                        <div class="prof-login-avatar">👨‍🏫</div>
+                        <h2 class="prof-login-title">Faculty Access</h2>
+                        <p class="prof-login-sub">Sign in with your DeadlineShield credentials.<br>Your account must be registered as <strong>Faculty</strong>.</p>
+                        <div class="prof-login-form">
+                            <input type="email" id="fac-login-email" class="prof-input" placeholder="Email address" autocomplete="email" />
+                            <input type="password" id="fac-login-password" class="prof-input" placeholder="Password" autocomplete="current-password" />
+                            <div class="prof-login-error" id="fac-login-error"></div>
+                            <button class="prof-login-btn" onclick="professionalLogin('faculty')">
+                                Sign in as Faculty
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard View -->
+                <div class="prof-dash-view" id="profDash-faculty" style="display:none;">
+                    <div class="prof-dash-topbar">
+                        <div class="prof-dash-welcome">
+                            <div class="prof-dash-avatar" id="fac-avatar">F</div>
+                            <div>
+                                <p class="prof-dash-name" id="fac-name">Faculty</p>
+                                <p class="prof-dash-role">Faculty · DeadlineShield</p>
+                            </div>
+                        </div>
+                        <button class="prof-signout-btn" onclick="professionalLogout('faculty')">Sign Out</button>
+                    </div>
+
+                    <!-- Counters -->
+                    <div class="prof-counters">
+                        <div class="prof-counter-card c-blue">
+                            <div class="prof-counter-num" id="fac-c-created">0</div>
+                            <div class="prof-counter-lbl">Created</div>
+                        </div>
+                        <div class="prof-counter-card c-green">
+                            <div class="prof-counter-num" id="fac-c-completed">0</div>
+                            <div class="prof-counter-lbl">Completions</div>
+                        </div>
+                        <div class="prof-counter-card c-red">
+                            <div class="prof-counter-num" id="fac-c-pending">0</div>
+                            <div class="prof-counter-lbl">Pending</div>
+                        </div>
+                    </div>
+
+                    <!-- Two-column layout -->
+                    <div class="prof-two-col">
+                        <!-- Assign Task Form -->
+                        <div class="prof-section-card">
+                            <div class="prof-section-head">
+                                <h3>📝 Assign New Task</h3>
+                            </div>
+                            <div class="prof-form">
+                                <input type="text" id="fac-task-title" class="prof-input" placeholder="Assignment title *" />
+                                <textarea id="fac-task-desc" class="prof-input" rows="3" placeholder="Description (optional)"></textarea>
+                                <label class="prof-label">Deadline</label>
+                                <input type="date" id="fac-task-deadline" class="prof-input" />
+                                <label class="prof-label">Assign To</label>
+                                <select id="fac-assign-to" class="prof-input">
+                                    <option value="all">All Students</option>
+                                </select>
+                                <label class="prof-label">Notify via</label>
+                                <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                                  <div style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="fac-notify-email" style="cursor: pointer; width: 18px; height: 18px;">
+                                    <label for="fac-notify-email" style="cursor: pointer; color: var(--text); user-select: none; margin: 0;">📧 Email</label>
+                                  </div>
+                                  <div style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="fac-notify-sms" style="cursor: pointer; width: 18px; height: 18px;">
+                                    <label for="fac-notify-sms" style="cursor: pointer; color: var(--text); user-select: none; margin: 0;">📱 SMS</label>
+                                  </div>
+                                </div>
+                                <button class="prof-action-btn" onclick="facultyCreateAssignment()">
+                                    Assign Task
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Student Progress -->
+                        <div class="prof-section-card">
+                            <div class="prof-section-head">
+                                <h3>👥 Student Progress</h3>
+                                <span class="prof-section-badge" id="fac-student-badge">0 students</span>
+                            </div>
+                            <div id="fac-student-list" class="prof-task-list">
+                                <div class="prof-empty-state">Loading students...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assignment History -->
+                    <div class="prof-section-card">
+                        <div class="prof-section-head">
+                            <h3>📊 Assignment History</h3>
+                            <span class="prof-section-badge" id="fac-assign-badge">0 assignments</span>
+                        </div>
+                        <div id="fac-assignment-list" class="prof-task-list">
+                            <div class="prof-empty-state">No assignments created yet.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── ADMIN PANEL ────────────────────────── -->
+            <div class="prof-panel" id="profPanel-admin" style="display:none;">
+
+                <!-- Login View (Hidden by default - auto-login for authenticated users) -->
+                <div class="prof-login-view" id="profLogin-admin" style="display: none;">
+                    <div class="prof-login-card">
+                        <div class="prof-login-avatar">👨‍💼</div>
+                        <h2 class="prof-login-title">Admin Access</h2>
+                        <p class="prof-login-sub">Sign in with your DeadlineShield credentials.<br>Your account must be registered as <strong>Admin</strong>.</p>
+                        <div class="prof-login-form">
+                            <input type="email" id="adm-login-email" class="prof-input" placeholder="Email address" autocomplete="email" />
+                            <input type="password" id="adm-login-password" class="prof-input" placeholder="Password" autocomplete="current-password" />
+                            <div class="prof-login-error" id="adm-login-error"></div>
+                            <button class="prof-login-btn" onclick="professionalLogin('admin')">
+                                Sign in as Admin
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard View -->
+                <div class="prof-dash-view" id="profDash-admin" style="display:none;">
+                    <div class="prof-dash-topbar">
+                        <div class="prof-dash-welcome">
+                            <div class="prof-dash-avatar" id="adm-avatar">A</div>
+                            <div>
+                                <p class="prof-dash-name" id="adm-name">Admin</p>
+                                <p class="prof-dash-role">Admin · DeadlineShield</p>
+                            </div>
+                        </div>
+                        <button class="prof-signout-btn" onclick="professionalLogout('admin')">Sign Out</button>
+                    </div>
+
+                    <!-- Counters -->
+                    <div class="prof-counters">
+                        <div class="prof-counter-card c-blue">
+                            <div class="prof-counter-num" id="adm-c-total">0</div>
+                            <div class="prof-counter-lbl">Total Assigned</div>
+                        </div>
+                        <div class="prof-counter-card c-green">
+                            <div class="prof-counter-num" id="adm-c-completed">0</div>
+                            <div class="prof-counter-lbl">Completions</div>
+                        </div>
+                        <div class="prof-counter-card c-red">
+                            <div class="prof-counter-num" id="adm-c-pending">0</div>
+                            <div class="prof-counter-lbl">Pending</div>
+                        </div>
+                    </div>
+
+                    <!-- Two-column layout -->
+                    <div class="prof-two-col">
+                        <!-- Assign to Faculty -->
+                        <div class="prof-section-card">
+                            <div class="prof-section-head">
+                                <h3>📝 Assign Task to Faculty</h3>
+                            </div>
+                            <div class="prof-form">
+                                <input type="text" id="adm-task-title" class="prof-input" placeholder="Task title *" />
+                                <textarea id="adm-task-desc" class="prof-input" rows="3" placeholder="Description (optional)"></textarea>
+                                <label class="prof-label">Deadline</label>
+                                <input type="date" id="adm-task-deadline" class="prof-input" />
+                                <label class="prof-label">Assign To</label>
+                                <select id="adm-assign-to" class="prof-input">
+                                    <option value="all">All Faculty</option>
+                                </select>
+                                <label class="prof-label">Notify via</label>
+                                <div style="display: flex; gap: 20px; margin-bottom: 15px;">
+                                  <div style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="adm-notify-email" style="cursor: pointer; width: 18px; height: 18px;">
+                                    <label for="adm-notify-email" style="cursor: pointer; color: var(--text); user-select: none; margin: 0;">📧 Email</label>
+                                  </div>
+                                  <div style="display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" id="adm-notify-sms" style="cursor: pointer; width: 18px; height: 18px;">
+                                    <label for="adm-notify-sms" style="cursor: pointer; color: var(--text); user-select: none; margin: 0;">📱 SMS</label>
+                                  </div>
+                                </div>
+                                <button class="prof-action-btn" onclick="adminCreateAssignment()">
+                                    Assign Task
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Faculty Progress -->
+                        <div class="prof-section-card">
+                            <div class="prof-section-head">
+                                <h3>👥 Faculty Progress</h3>
+                                <span class="prof-section-badge" id="adm-faculty-badge">0 faculty</span>
+                            </div>
+                            <div id="adm-faculty-list" class="prof-task-list">
+                                <div class="prof-empty-state">Loading faculty...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Assignment Overview -->
+                    <div class="prof-section-card">
+                        <div class="prof-section-head">
+                            <h3>📊 Assignment Overview</h3>
+                            <span class="prof-section-badge" id="adm-assign-badge">0 assignments</span>
+                        </div>
+                        <div id="adm-assignment-list" class="prof-task-list">
+                            <div class="prof-empty-state">No assignments yet.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="toast" id="toast"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="dashboard.js?v=2"></script>
+    </body>
+=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -235,4 +1108,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="dashboard.js?v=2"></script>
 </body>
+>>>>>>> origin/feature/new-pages-and-database-cleanup
 </html>

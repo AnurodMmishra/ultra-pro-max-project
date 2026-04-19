@@ -763,6 +763,44 @@ body {
   75% { transform: translateX(5px); }
 }
 
+<<<<<<< HEAD
+/* Custom Select Dropdown Styling */
+.select-wrapper {
+  position: relative;
+  display: block;
+}
+
+.select-wrapper select {
+  width: 100% !important;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.select-wrapper select::-webkit-scrollbar {
+  width: 8px;
+}
+
+.select-wrapper select::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.select-wrapper select::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.select-wrapper select::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Ensure select options open downward */
+.select-wrapper select optgroup {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+=======
+>>>>>>> origin/feature/new-pages-and-database-cleanup
 /* RESPONSIVE */
 @media (max-width: 480px) {
   .bg-clock { width: 110px; height: 110px; }

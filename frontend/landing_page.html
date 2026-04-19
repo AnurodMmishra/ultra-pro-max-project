@@ -1,3 +1,426 @@
+<<<<<<< HEAD
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>DeadlineShield</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;500&display=swap"
+            rel="stylesheet"
+        />
+        <meta
+            http-equiv="Cache-Control"
+            content="no-cache, no-store, must-revalidate"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/css/intlTelInput.css"
+        />
+        <link rel="stylesheet" href="landing_page.css" />
+    </head>
+    <body>
+        <section class="hero">
+            <div class="bg-clock" id="clock">
+                <div class="clock-inner">
+                    <div class="hand hour" id="hour"></div>
+                    <div class="hand minute" id="minute"></div>
+                    <div class="hand second" id="second"></div>
+                    <div class="clock-center"></div>
+                </div>
+            </div>
+
+            <div class="overlay"></div>
+
+            <div class="content">
+                <div class="badge">
+                    <span class="dot"></span> Deadline Enforcement System
+                </div>
+
+                <h1 class="heading">
+                    Is the clock ticking<br />too fast for you to keep up with
+                    <span class="deadline-word">deadlines?</span>
+                </h1>
+
+                <p class="subtext">
+                    Every second you wait,
+                    <span>the deadline gets closer.</span> Take control now.
+                </p>
+
+                <div class="features">
+                    <a href="reminders.html" class="feat-link">
+                        <div class="feat">
+                            <span class="feat-icon">⏰</span> Hourly Email
+                            Reminders
+                        </div>
+                    </a>
+                    <a href="proof-system.html" class="feat-link">
+                        <div class="feat">
+                            <span class="feat-icon">📸</span> Proof-Based
+                            Completion
+                        </div>
+                    </a>
+                    <a href="enforcement.html" class="feat-link">
+                        <div class="feat">
+                            <span class="feat-icon">🛡️</span> Deadline
+                            Enforcement
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card">
+                    <div class="tabs">
+                        <button class="tab active" data-target="register">
+                            Register
+                        </button>
+                        <button class="tab" data-target="login">Login</button>
+                    </div>
+
+                    <div class="form-body">
+                        <div class="form-panel active" id="register">
+                            <div class="field-group">
+                                <input
+                                    type="text"
+                                    id="register-name"
+                                    placeholder="Full Name"
+                                    required
+                                    autocomplete="name"
+                                />
+                            </div>
+                            <div class="field-group">
+                                <input
+                                    type="email"
+                                    id="register-email"
+                                    placeholder="Email Address"
+                                    required
+                                    autocomplete="email"
+                                />
+                            </div>
+                            <div class="field-group phone-field-group">
+                                <label
+                                    class="visually-hidden"
+                                    for="register-phone"
+                                    >WhatsApp mobile number</label
+                                >
+                                <input
+                                    type="tel"
+                                    id="register-phone"
+                                    placeholder="Mobile number"
+                                    required
+                                    autocomplete="tel-national"
+                                />
+                                <span class="phone-hint"
+                                    >Choose country (flag) + international dial
+                                    code, then type your mobile number. Saved as
+                                    E.164 (e.g. +91…).</span
+                                >
+                            </div>
+                            <div class="field-group password-field-group">
+                                <div class="password-input-wrapper">
+                                    <input
+                                        type="password"
+                                        id="register-password"
+                                        placeholder="Password"
+                                        required
+                                        autocomplete="new-password"
+                                    />
+                                    <button
+                                        class="password-toggle-btn"
+                                        id="password-toggle-btn"
+                                        type="button"
+                                        title="Show/Hide Password"
+                                    >
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <path
+                                                d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"
+                                            />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        class="password-info-btn"
+                                        id="password-info-btn"
+                                        type="button"
+                                        title="Password requirements"
+                                    >
+                                        ℹ️
+                                    </button>
+                                </div>
+                                <div
+                                    class="password-requirements"
+                                    id="password-requirements"
+                                    style="display: none"
+                                >
+                                    <div class="req-title">
+                                        Password must contain:
+                                    </div>
+                                    <div class="req-item" id="req-length">
+                                        ✓ At least 6 characters
+                                    </div>
+                                    <div class="req-item" id="req-upper">
+                                        ✓ One uppercase letter (A-Z)
+                                    </div>
+                                    <div class="req-item" id="req-lower">
+                                        ✓ One lowercase letter (a-z)
+                                    </div>
+                                    <div class="req-item" id="req-number">
+                                        ✓ One number (0-9)
+                                    </div>
+                                    <div class="req-item" id="req-special">
+                                        ✓ One special character (!@#$%^&*)
+                                    </div>
+                                </div>
+                                <div
+                                    class="password-error-message"
+                                    id="password-error-message"
+                                    style="display: none"
+                                >
+                                    ⚠️ Please read password instructions above
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <div class="password-input-wrapper">
+                                    <input
+                                        type="password"
+                                        id="register-password-confirm"
+                                        placeholder="Confirm Password"
+                                        required
+                                        autocomplete="new-password"
+                                    />
+                                    <button
+                                        class="password-toggle-btn-confirm"
+                                        id="password-toggle-btn-confirm"
+                                        type="button"
+                                        title="Show/Hide Password"
+                                    >
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <path
+                                                d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"
+                                            />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div
+                                    class="password-match-error"
+                                    id="password-match-error"
+                                    style="display: none"
+                                >
+                                    ⚠️ Passwords do not match
+                                </div>
+                            </div>
+                            <div class="field-group select-wrapper">
+                                <select
+                                    id="register-role"
+                                    required
+                                    style="
+                                        width: 100%;
+                                        padding: 12px 14px;
+                                        padding-right: 40px;
+                                        background: rgba(255, 255, 255, 0.07);
+                                        border: 1px solid
+                                            rgba(255, 255, 255, 0.15);
+                                        border-radius: 8px;
+                                        color: #fff;
+                                        font-family:
+                                            &quot;Poppins&quot;, sans-serif;
+                                        font-size: 0.9rem;
+                                        cursor: pointer;
+                                        outline: none;
+                                        appearance: none;
+                                        -webkit-appearance: none;
+                                        -moz-appearance: none;
+                                        background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2224%22 height=%2224%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>');
+                                        background-repeat: no-repeat;
+                                        background-position: right 10px center;
+                                        background-size: 20px;
+                                    "
+                                >
+                                    <option
+                                        value=""
+                                        disabled
+                                        selected
+                                        style="background: #1a1a2e; color: #aaa"
+                                    >
+                                        — Select Your Designation —
+                                    </option>
+                                    <option
+                                        value="student"
+                                        style="background: #1a1a2e"
+                                    >
+                                        👨‍🎓 Student
+                                    </option>
+                                    <option
+                                        value="faculty"
+                                        style="background: #1a1a2e"
+                                    >
+                                        👨‍🏫 Faculty
+                                    </option>
+                                    <option
+                                        value="admin"
+                                        style="background: #1a1a2e"
+                                    >
+                                        👨‍💼 Admin / Manager
+                                    </option>
+                                    <option
+                                        value="other"
+                                        style="background: #1a1a2e"
+                                    >
+                                        👤 Other (Personal Use)
+                                    </option>
+                                </select>
+                            </div>
+                            <button class="submit-btn" id="register-btn">
+                                Create Account
+                            </button>
+
+                            <div
+                                class="otp-panel"
+                                id="otp-panel"
+                                style="display: none"
+                            >
+                                <div class="otp-title">Verify your account</div>
+                                <div class="otp-sub">
+                                    We sent 6‑digit codes to your email and
+                                    WhatsApp number.
+                                </div>
+
+                                <div class="field-group">
+                                    <input
+                                        type="text"
+                                        id="otp-email"
+                                        inputmode="numeric"
+                                        autocomplete="one-time-code"
+                                        placeholder="Email OTP (6 digits)"
+                                    />
+                                    <div class="otp-actions">
+                                        <button
+                                            class="otp-btn"
+                                            id="verify-email-otp-btn"
+                                            type="button"
+                                        >
+                                            Verify Email
+                                        </button>
+                                        <button
+                                            class="otp-btn ghost"
+                                            id="resend-email-otp-btn"
+                                            type="button"
+                                        >
+                                            Resend
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="field-group">
+                                    <input
+                                        type="text"
+                                        id="otp-phone"
+                                        inputmode="numeric"
+                                        autocomplete="one-time-code"
+                                        placeholder="Phone OTP (6 digits)"
+                                    />
+                                    <div class="otp-actions">
+                                        <button
+                                            class="otp-btn"
+                                            id="verify-phone-otp-btn"
+                                            type="button"
+                                        >
+                                            Verify Phone
+                                        </button>
+                                        <button
+                                            class="otp-btn ghost"
+                                            id="resend-phone-otp-btn"
+                                            type="button"
+                                        >
+                                            Resend
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="otp-sub" id="otp-status">
+                                    After both are verified, you can log in.
+                                </div>
+                            </div>
+
+                            <p class="form-footer">
+                                Already have an account?
+                                <a href="#" data-switch="login">Login</a>
+                            </p>
+                        </div>
+
+                        <div class="form-panel" id="login">
+                            <div class="field-group">
+                                <input
+                                    type="email"
+                                    id="login-email"
+                                    placeholder="Email Address"
+                                    required
+                                    autocomplete="email"
+                                />
+                            </div>
+                            <div class="field-group">
+                                <div class="password-input-wrapper">
+                                    <input
+                                        type="password"
+                                        id="login-password"
+                                        placeholder="Password"
+                                        required
+                                        autocomplete="current-password"
+                                    />
+                                    <button
+                                        class="password-toggle-btn"
+                                        id="login-password-toggle-btn"
+                                        type="button"
+                                        title="Show/Hide Password"
+                                    >
+                                        <svg
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                        >
+                                            <path
+                                                d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"
+                                            />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="submit-btn" id="login-btn">
+                                Login to Dashboard
+                            </button>
+                            <p class="form-footer">
+                                No account?
+                                <a href="#" data-switch="register">Register</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="toast" id="toast"></div>
+        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/intlTelInput.min.js"></script>
+        <script src="landing_page.js"></script>
+    </body>
+=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -159,4 +582,5 @@
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/intlTelInput.min.js"></script>
 <script src="landing_page.js"></script>
 </body>
+>>>>>>> origin/feature/new-pages-and-database-cleanup
 </html>
