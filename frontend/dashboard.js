@@ -243,28 +243,29 @@ async function refreshUI() {
   if (!container) return;
   try {
     const response = await authFetch("/api/tasks");
+    
     if (!response.ok) {
-      let msg = `Failed to load tasks (HTTP ${response.status})`;
-      try {
-        const errText = await response.text();
-        if (errText) msg += `: ${errText}`;
-      } catch {}
-      console.error(msg);
-      container.innerHTML = `<div class="tasks-empty-state"><p>${msg}</p></div>`;
+      console.error("Failed to fetch tasks:", response.status);
+      container.innerHTML = '<div class="tasks-empty-state"><p>Failed to load tasks</p></div>';
       return;
     }
+
     const responseText = await response.text();
     if (!responseText) {
+      console.error("Empty response from tasks endpoint");
       container.innerHTML = '<div class="tasks-empty-state"><p>No tasks</p></div>';
       return;
     }
+
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (parseError) {
-      container.innerHTML = '<div class="tasks-empty-state"><p>Error loading tasks (invalid server response)</p></div>';
+      console.error("JSON parse error in refreshUI:", parseError);
+      container.innerHTML = '<div class="tasks-empty-state"><p>Error loading tasks</p></div>';
       return;
     }
+
     if (data.success && Array.isArray(data.data)) {
       container.innerHTML = "";
       if (data.data.length === 0) {
@@ -296,9 +297,7 @@ async function refreshUI() {
       updateProfessionalSection(data.data);
     }
   } catch (error) {
-    let msg = `Failed to load tasks: ${error && error.message ? error.message : error}`;
-    container.innerHTML = `<div class="tasks-empty-state"><p>${msg}</p></div>`;
-    console.error(msg);
+    console.error("Failed to load tasks:", error);
   }
 }
 
